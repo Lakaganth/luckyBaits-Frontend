@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import * as AuthActions from "../../store/actions/AuthActions";
+import { useSelector } from "react-redux";
+// import * as AuthActions from "../../store/actions/AuthActions";
 import DefaultAvatar from "../../assets/svg/avatar_default.svg";
 import MenuIcon from "../../assets/svg/menu_icon.svg";
 

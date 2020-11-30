@@ -5,16 +5,16 @@ const OrderList = ({ order }) => {
   const {
     status,
     currentDept,
-    _id,
+    // _id,
     sku,
     part,
     pick,
     quantity,
     receipt,
-    updatedAt,
+    // updatedAt,
     createdAt,
-    orderComplete,
-    transfers,
+    // orderComplete,
+    // transfers,
   } = order;
   console.log(status);
   return (
