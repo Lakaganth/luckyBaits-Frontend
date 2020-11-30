@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import './App.css';
+import DashboardPage from './pages/dashboardPage/DashboardPage';
+import LoginPage from './pages/loginPage/LoginPage';
+import { useSelector, useDispatch } from "react-redux";
+import * as AuthActions from './store/actions/AuthActions'
+
+
+const  App = ()=> {
+  const location = useLocation()
+
+  const authRedux = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    console.log(authRedux.token)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <Switch location={location}>    
+
+       <Route exact path="/" render={()=> authRedux.token !== '' ? (<DashboardPage/>) : (<LoginPage />)} />    
+
+       {/* <Route exact path="/" component={DashboardPage} /> */}
+     
+     </Switch>
     </div>
   );
 }
