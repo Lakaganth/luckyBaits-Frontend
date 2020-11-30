@@ -9,14 +9,14 @@ const DashboardPage = () => {
   const ordersRedux = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
 
-  const getAllOrders = async () => {
-    dispatch(OrderActions.getAllOrders());
-    // console.log(ordersRedux[0].status);
-  };
-
   useEffect(() => {
+    const getAllOrders = async () => {
+      dispatch(OrderActions.getAllOrders());
+      // console.log(ordersRedux[0].status);
+    };
     getAllOrders();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleOrderDetailNavigation = (order) => {};
 
