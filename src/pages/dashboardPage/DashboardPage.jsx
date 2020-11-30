@@ -16,11 +16,9 @@ const DashboardPage = () => {
 
   useEffect(() => {
     getAllOrders();
-  }, []);
+  });
 
-  const handleOrderDetailNavigation = (order) => {
-    console.log("Hallo");
-  };
+  const handleOrderDetailNavigation = (order) => {};
 
   return (
     <Container>

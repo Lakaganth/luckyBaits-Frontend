@@ -1,17 +1,17 @@
 
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import {  Route, Switch, useLocation } from 'react-router-dom';
 import './App.css';
 import DashboardPage from './pages/dashboardPage/DashboardPage';
 import LoginPage from './pages/loginPage/LoginPage';
-import { useSelector, useDispatch } from "react-redux";
-import * as AuthActions from './store/actions/AuthActions'
+import { useSelector,  } from "react-redux";
+// import * as AuthActions from './store/actions/AuthActions'
 
 
 const  App = ()=> {
   const location = useLocation()
 
   const authRedux = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     console.log(authRedux.token)
 
   return (
