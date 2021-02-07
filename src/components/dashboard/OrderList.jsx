@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const OrderList = ({ order }) => {
   const {
-    status,
+    // status,
     currentDept,
     // _id,
     sku,
@@ -16,7 +16,7 @@ const OrderList = ({ order }) => {
     // orderComplete,
     // transfers,
   } = order;
-  console.log(status);
+
   return (
     <Container>
       <Color></Color>

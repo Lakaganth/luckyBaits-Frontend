@@ -4,21 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
 import OrderList from "../../components/dashboard/OrderList";
 import Navbar from "../../components/navbar/Navbar";
+import { Link, useHistory } from "react-router-dom";
 
 const DashboardPage = () => {
   const ordersRedux = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
-
+  const history = useHistory();
   useEffect(() => {
     const getAllOrders = async () => {
       dispatch(OrderActions.getAllOrders());
-      // console.log(ordersRedux[0].status);
     };
     getAllOrders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleOrderDetailNavigation = (order) => {};
 
   return (
     <Container>
@@ -27,12 +25,22 @@ const DashboardPage = () => {
       <RecentWorkOrder>
         {ordersRedux.length > 0 &&
           ordersRedux.map((order, index) => (
+            // <Link
+            //   to={{ pathname: `/orders/${order._id}`, order: { order } }}
+            //   key={order._id}
+            // >
             <button
               key={order._id}
-              onClick={() => handleOrderDetailNavigation(order)}
+              onClick={() =>
+                history.push({
+                  pathname: `/orders/${order._id}`,
+                  order: { order },
+                })
+              }
             >
               <OrderList key={order._id} order={order} />
             </button>
+            // </Link>
           ))}
       </RecentWorkOrder>
     </Container>
@@ -45,6 +53,10 @@ const Container = styled.div`
   background-color: #e4eaf5;
   button {
     background-color: transparent;
+  }
+
+  a {
+    color: black;
   }
 `;
 
