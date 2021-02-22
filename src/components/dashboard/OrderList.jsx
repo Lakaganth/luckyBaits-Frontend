@@ -1,18 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const OrderList = ({ order }) => {
+  const history = useHistory();
   const {
     // status,
     currentDept,
     // _id,
     sku,
-    part,
-    pick,
-    quantity,
-    receipt,
+    description,
+    weeks2,
+    weeks4,
+    ioQty,
+    cat,
     // updatedAt,
-    createdAt,
+    totalNeeded,
     // orderComplete,
     // transfers,
   } = order;
@@ -22,45 +25,55 @@ const OrderList = ({ order }) => {
       <Color></Color>
       <Data>
         <p>Image</p>
+        <p></p>
+      </Data>
+
+      <ButtonData>
+        <button
+          onClick={() =>
+            history.push({
+              pathname: `/bom/${order.sku}`,
+            })
+          }
+        >
+          <p>SKU</p>
+          <p>{sku}</p>
+        </button>
+      </ButtonData>
+      <Data>
+        <p>Description</p>
+        <p>{description}</p>
       </Data>
       <Data>
-        <p>SKU</p>
-        <p>{sku}</p>
+        <p>2 Weeks</p>
+        <p>{weeks2}</p>
       </Data>
       <Data>
-        <p>Part</p>
-        <p>{part}</p>
-      </Data>
-      <Data>
-        <p>Quantity</p>
-        <p>{quantity}</p>
-      </Data>
-      <Data>
-        <p>Quanity Done</p>
-        <p>{quantity}</p>
+        <p>4 Weeks</p>
+        <p>{weeks4}</p>
       </Data>
       <Data>
         <p>Department</p>
         <p>{currentDept}</p>
       </Data>
       <Data>
-        <p>Receipt</p>
-        <p>{receipt}</p>
+        <p>Inbound Order QTY</p>
+        <p>{ioQty}</p>
       </Data>
       <Data>
-        <p>Pick</p>
-        <p>{pick}</p>
+        <p>CAT</p>
+        <p>{cat}</p>
       </Data>
       <Data>
-        <p>Time</p>
-        <p>{createdAt}</p>
+        <p>Total Needed</p>
+        <p>{totalNeeded}</p>
       </Data>
     </Container>
   );
 };
 const Container = styled.div`
   width: 100%;
-  height: 100px;
+  min-height: 10vh;
   background-color: #fff;
   border-radius: 19px;
   background: #f4f4f4;
@@ -69,19 +82,35 @@ const Container = styled.div`
   position: relative;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  /* justify-content:center; */
-  /* align-content:center; */
+  /* justify-content: center;
+  align-content: center; */
 `;
 
 const Data = styled.div`
   display: grid;
   grid-template-columns: repeat(1fr, 2);
-  /* align-self:center; */
+  align-self: center;
   justify-self: center;
   border-right: 1px solid rgba(204, 204, 204, 0.67);
-  padding-right: 10px;
+  /* padding-right: 10px; */
   p {
     text-align: center;
+    padding: 10px 0;
+  }
+`;
+const ButtonData = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1fr, 2);
+  /* align-self: center; */
+  /* justify-self: center; */
+  border-right: 1px solid rgba(204, 204, 204, 0.67);
+  padding-right: 10px;
+  button {
+    margin: 0;
+    padding: 0;
+  }
+  p {
+    /* text-align: center; */
     padding: 10px 0;
   }
 `;
