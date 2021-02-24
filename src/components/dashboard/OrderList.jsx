@@ -28,18 +28,18 @@ const OrderList = ({ order }) => {
         <p></p>
       </Data>
 
-      <ButtonData>
-        <button
+      <Data>
+        {/* <button
           onClick={() =>
             history.push({
               pathname: `/bom/${order.sku}`,
             })
           }
-        >
-          <p>SKU</p>
-          <p>{sku}</p>
-        </button>
-      </ButtonData>
+        > */}
+        <p>SKU</p>
+        <p>{sku}</p>
+        {/* </button> */}
+      </Data>
       <Data>
         <p>Description</p>
         <p>{description}</p>

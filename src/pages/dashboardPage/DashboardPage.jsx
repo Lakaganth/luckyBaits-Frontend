@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
 import OrderList from "../../components/dashboard/OrderList";
 import Navbar from "../../components/navbar/Navbar";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import ReactPaginate from "react-paginate";
+import PriorityButtons from "../../components/dashboard/PriorityButtons";
 
 const pageOptions = [
   { value: 10, label: "10" },
@@ -20,9 +21,10 @@ const pageOptions = [
 const DashboardPage = () => {
   const ordersRedux = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
-  // const history = useHistory();
+  const history = useHistory();
   const [pagination, setPagination] = useState(10);
   const [page, setPage] = useState(1);
+  const [priority, setPriority] = useState(false);
   useEffect(() => {
     const getAllOrders = async () => {
       console.log("Hello");
@@ -31,7 +33,14 @@ const DashboardPage = () => {
     getAllOrders();
   }, [pagination, dispatch, page]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  console.log(page);
+
+  const displayHighPriority = () => {
+    setPriority(true);
+  };
+
+  const displayLowPriority = () => {
+    setPriority(false);
+  };
   return (
     <Container>
       <Navbar />
@@ -47,20 +56,29 @@ const DashboardPage = () => {
           />
         </div>
       </PaginationSection>
+      <PriorityButtons
+        displayHigh={displayHighPriority}
+        displayLow={displayLowPriority}
+      />
       <RecentWorkOrder>
+        {priority ? (
+          <p className="priority-title">High Prioirty Work orders</p>
+        ) : (
+          <p className="priority-title">Low Priority work Orders</p>
+        )}
         {ordersRedux.length > 0 &&
           ordersRedux.map((order, index) => (
-            // <button
-            //   key={order._id}
-            //   onClick={() =>
-            //     history.push({
-            //       pathname: `/orders/${order._id}`,
-            //       order: { order },
-            //     })
-            //   }
-            // >
-            <OrderList key={order._id} order={order} />
-            /* </button> */
+            <button
+              key={order._id}
+              onClick={() =>
+                history.push({
+                  pathname: `/orders/${order._id}`,
+                  order: { order },
+                })
+              }
+            >
+              <OrderList key={order._id} order={order} />
+            </button>
           ))}
       </RecentWorkOrder>
       <PageCount>
@@ -98,7 +116,17 @@ const Container = styled.div`
 const RecentWorkOrder = styled.div`
   width: 90%;
   background-color: #e4eaf5;
-  margin: 0 auto;
+  margin: 5vh auto;
+  .priority-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 38px;
+    line-height: 99.2%;
+    /* identical to box height, or 28px */
+    text-align: left;
+    color: #727272;
+  }
 `;
 
 const PaginationSection = styled.div`
