@@ -1,7 +1,7 @@
 import { Route, Switch, useLocation } from "react-router-dom";
 import "./App.css";
 import DashboardPage from "./pages/dashboardPage/DashboardPage";
-import LoginPage from "./pages/loginPage/LoginPage";
+// import LoginPage from "./pages/loginPage/LoginPage";
 import { useSelector } from "react-redux";
 // import * as AuthActions from './store/actions/AuthActions'
 import OrderDetailPage from "./pages/orderDetailPage/OrderDetailPage";
