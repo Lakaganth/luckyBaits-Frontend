@@ -59,23 +59,23 @@ const DataContainer = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 21px;
   position: relative;
+  font-family: Roboto Medium;
   .title {
     height: 40%;
     width: 100%;
     background: linear-gradient(
-        180deg,
-        #4f56e1 0%,
-        #6b71ee 42.19%,
-        #8a8ffd 100%
-        );
-        background-image: url("../../assets/semicircles.png")
+      180deg,
+      #4f56e1 0%,
+      #6b71ee 42.19%,
+      #8a8ffd 100%
+    );
+    background-image: url("../../assets/semicircles.png");
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 21px 21px 0px 0px;
     position: absolute;
     top: 0;
     left: 0;
     p {
-      font-family: Roboto Medium;
       font-style: normal;
       font-weight: 500;
       font-size: 20px;

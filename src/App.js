@@ -19,7 +19,7 @@ const App = () => {
           exact
           path="/"
           render={() =>
-            authRedux.token !== "" ? <DashboardPage /> : <LoginPage />
+            authRedux.token !== "" ? <DashboardPage /> : <DashboardPage />
           }
         />
         <Route path="/orders/:id" component={OrderDetailPage} />

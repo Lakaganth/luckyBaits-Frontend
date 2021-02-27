@@ -8,6 +8,8 @@ import Collapse from "../../assets/collapse.png";
 
 const SkuDetailPAge = (props) => {
   let { sku } = useParams();
+
+  // console.log(skuParam.sku);
   const dispatch = useDispatch();
   const bomRedux = useSelector((state) => state.orders.bom);
   useEffect(() => {
@@ -17,6 +19,11 @@ const SkuDetailPAge = (props) => {
   const goBack = async () => {
     dispatch(OrderActions.clearReduxBOM);
     props.history.goBack();
+
+    // props.history.push({
+    //   pathname: `/orders/${order._id}`,
+    //   order: { order },
+    // })
   };
 
   return (

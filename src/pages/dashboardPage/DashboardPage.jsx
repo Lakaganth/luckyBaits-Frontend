@@ -18,35 +18,76 @@ const pageOptions = [
   { value: 50, label: "50" },
 ];
 
+const currentDept = [
+  { value: "all", label: "All" },
+  { value: "Assembly", label: "Assembly" },
+  { value: "Painting", label: "Painting" },
+  { value: "Home Worker", label: "Home Worker" },
+  { value: "Plating", label: "Plating" },
+  { value: "Stamping", label: "Stamping" },
+  { value: "Nets", label: "Nets" },
+  { value: "Purchasing", label: "Purchasing" },
+];
+
 const DashboardPage = () => {
   const ordersRedux = useSelector((state) => state.orders.orders);
+  const priorRedux = useSelector((state) => state.orders.priority);
   const dispatch = useDispatch();
   const history = useHistory();
   const [pagination, setPagination] = useState(10);
   const [page, setPage] = useState(1);
-  const [priority, setPriority] = useState(false);
+  const [priority, setPriority] = useState(priorRedux);
+  const [department, setDepartment] = useState("all");
+
   useEffect(() => {
     const getAllOrders = async () => {
-      console.log("Hello");
-      dispatch(OrderActions.getAllOrders(pagination, page));
+      dispatch(
+        OrderActions.getAllOrders(pagination, page, priority, department)
+      );
     };
     getAllOrders();
-  }, [pagination, dispatch, page]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const displayHighPriority = () => {
+  const displayHighPriority = async () => {
     setPriority(true);
+    await dispatch(
+      OrderActions.getAllOrders(pagination, page, true, department)
+    );
   };
 
-  const displayLowPriority = () => {
+  const displayLowPriority = async () => {
     setPriority(false);
+    await dispatch(
+      OrderActions.getAllOrders(pagination, page, false, department)
+    );
   };
+
+  const onOrderSelect = async (order) => {
+    await dispatch(OrderActions.setCurrentOrder(order));
+    history.push({
+      pathname: `/orders/${order._id}`,
+    });
+  };
+
+  const fetchDepartmentOrder = (dept) => {
+    setDepartment(dept);
+    dispatch(OrderActions.getAllOrders(pagination, page, priorRedux, dept));
+  };
+
   return (
     <Container>
       <Navbar />
       <h3>Dashboard</h3>
       <PaginationSection>
-        <div />
+        <div className="set-department">
+          <p>Department</p>
+          <Dropdown
+            defaultValue={department}
+            onChange={(v) => fetchDepartmentOrder(v.value)}
+            options={currentDept}
+          />
+        </div>
         <div>
           <p>Orders per page</p>
           <Dropdown
@@ -64,19 +105,11 @@ const DashboardPage = () => {
         {priority ? (
           <p className="priority-title">High Prioirty Work orders</p>
         ) : (
-            <p className="priority-title">Low Priority work Orders</p>
-          )}
+          <p className="priority-title">Low Priority work Orders</p>
+        )}
         {ordersRedux.length > 0 &&
           ordersRedux.map((order, index) => (
-            <button
-              key={order._id}
-              onClick={() =>
-                history.push({
-                  pathname: `/orders/${order._id}`,
-                  order: { order },
-                })
-              }
-            >
+            <button key={order._id} onClick={() => onOrderSelect(order)}>
               <OrderList key={order._id} order={order} />
             </button>
           ))}
@@ -134,6 +167,9 @@ const PaginationSection = styled.div`
   grid-template-columns: 1fr 15vw;
   margin: 0 5vw;
   text-align: center;
+  .set-department {
+    width: 50%;
+  }
 `;
 const PageCount = styled.div``;
 
