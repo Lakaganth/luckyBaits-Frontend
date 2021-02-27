@@ -64,8 +64,8 @@ const DashboardPage = () => {
         {priority ? (
           <p className="priority-title">High Prioirty Work orders</p>
         ) : (
-          <p className="priority-title">Low Priority work Orders</p>
-        )}
+            <p className="priority-title">Low Priority work Orders</p>
+          )}
         {ordersRedux.length > 0 &&
           ordersRedux.map((order, index) => (
             <button

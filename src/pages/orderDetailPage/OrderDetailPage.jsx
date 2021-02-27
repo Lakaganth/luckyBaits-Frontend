@@ -4,97 +4,36 @@ import Navbar from "../../components/navbar/Navbar";
 import Barcode from "../../assets/barcode.png";
 import Transfer from "../../assets/transfer.png";
 import Collapse from "../../assets/collapse.png";
+import SKUButton from './SKUButton';
+import { useHistory } from 'react-router-dom';
+import TransferButton from './TransferButton';
 
 const OrderDetailPage = (props) => {
   const { order } = props.location.order;
+  const history = useHistory();
+
 
   const goBack = () => {
-    props.history.goBack();
+    history.goBack();
   };
+
+  console.log(order)
 
   return (
     <Container>
       <Navbar />
       <PageContainer>
         <OrderContainer>
-          <div className="left-col">
-            <LabelBoxComponent
-              label="SKU"
-              width="180px"
-              height="100px"
-              content={order.sku}
-            />
-            <LabelBoxComponent
-              label="Part"
-              width="180px"
-              height="247px"
-              content={order.part}
-            />
-            <LabelBoxComponent
-              label="Quantity"
-              width="180px"
-              height="100px"
-              content={order.quantity}
-            />
-            <LabelBoxComponent
-              label="Department"
-              width="180px"
-              height="100px"
-              content={order.currentDept}
-            />
-          </div>
-          <div className="status">
-            <LabelBoxComponent
-              label="Status"
-              width="180px"
-              height="100px"
-              content={order.status}
-              boxColor="#2ED284"
-            />
-          </div>
-          <div className="receipt">
-            <LabelBoxComponent
-              label="Receipt"
-              width="180px"
-              height="100px"
-              content={order.receipt}
-            />
-          </div>
-          <div className="barcode">
-            <LabelBoxComponent
-              label=""
-              width="575px"
-              height="367px"
-              content={<img src={Barcode} alt="barcode-img" />}
-              boxColor="#D2D8EE"
-            />
-          </div>
-          <div className="transfer">
-            <LabelBoxComponent
-              width="280px"
-              height="100px"
-              content={
-                <div className="transfer-content">
-                  <img src={Transfer} alt="transfer-img" />
-                  <p>Transfer</p>
-                </div>
-              }
-              boxColor="#4F56E1"
-            />
-          </div>
-          <div className="receipt">
-            <LabelBoxComponent
-              label="Receipt"
-              width="180px"
-              height="100px"
-              content={order.receipt}
-            />
-          </div>
-          <CollapseBox>
-            <button onClick={goBack}>
-              <img src={Collapse} alt="Close" />
-            </button>
-          </CollapseBox>
+          <DataSection>
+            <LabelBoxComponent label="Description" width="15vw" height="15vh" content={order.description} />
+            <LabelBoxComponent label="CAT" width="15vw" height="10vh" content={order.cat} />
+            <LabelBoxComponent label="Inbound QTY" width="15vw" height="10vh" content={order.ioQty} />
+            <LabelBoxComponent label="Total Needed" width="15vw" height="10vh" content={order.totalNeeded} />
+          </DataSection>
+          <ActionSection>
+            <SKUButton sku={order.sku} />
+            <TransferButton currentDept={order.currentDept} />
+          </ActionSection>
         </OrderContainer>
       </PageContainer>
     </Container>
@@ -114,16 +53,13 @@ const LabelBoxComponent = ({ label, width, height, content, boxColor }) => {
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #fff;
 `;
 const PageContainer = styled.div`
   width: 100vw;
   min-height: 100vh;
   background-color: #fff;
-`;
-const CollapseBox = styled.div`
-  grid-area: collapse;
 `;
 
 const OrderContainer = styled.div`
@@ -135,63 +71,43 @@ const OrderContainer = styled.div`
   box-shadow: 0px 12px 18px -7px rgba(0, 0, 0, 0.25);
   border-radius: 50px;
   display: grid;
-  grid-template-columns: 1fr 5vw 1fr 1fr 20px;
-  /* grid-template-rows: auto; */
+  grid-template-columns: 1fr 2fr;
 
-  grid-template-areas:
-    "leftcol . status receipt collapse "
-    "leftcol . barcode barcode ."
-    "leftcol . barcode barcode ."
-    "leftcol . . transfer .";
-
-  align-content: center;
-
-  .left-col {
-    grid-area: leftcol;
-    div {
-      padding: 2vh 0;
-    }
-  }
-  .status {
-    grid-area: status;
-  }
-  .barcode {
-    grid-area: barcode;
-  }
-  .receipt {
-    grid-area: receipt;
-  }
-  .transfer {
-    grid-area: transfer;
-    padding: 1vh auto;
-    align-self: center;
-  }
-  .transfer-content {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-    margin: 1vh auto;
-  }
+ 
 `;
 
+const DataSection = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: stretch;
+`;
+
+const ActionSection = styled.div`
+display:flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: stretch;
+`;
+
+
+
 const LabeledBox = styled.div`
-  width: 180px;
+  /* width: 180px; */
   /* height: 64px; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-
   p {
     font-family: Roboto;
     font-style: normal;
     font-weight: 300;
-    font-size: 30px;
+    font-size: 1.5em;
     line-height: 99.2%;
+    margin-bottom: .2em;
     /* or 30px */
-
-    text-align: center;
+    text-align: center;    
   }
 `;
 
@@ -204,13 +120,16 @@ const BlackBox = styled.div`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 39px;
+  font-size: 1.5em;
   line-height: 99.2%;
   text-transform: capitalize;
-
   text-align: center;
-  padding: 1vh 0;
-  color: #e4e4f1;
+  padding: 0 1vw;
+  color: #e4e4f1;  
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  
 `;
 
 export default OrderDetailPage;

@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 
 const OrderList = ({ order }) => {
-  const history = useHistory();
+
   const {
     // status,
     currentDept,
@@ -29,16 +28,10 @@ const OrderList = ({ order }) => {
       </Data>
 
       <Data>
-        {/* <button
-          onClick={() =>
-            history.push({
-              pathname: `/bom/${order.sku}`,
-            })
-          }
-        > */}
+
         <p>SKU</p>
         <p>{sku}</p>
-        {/* </button> */}
+
       </Data>
       <Data>
         <p>Description</p>
