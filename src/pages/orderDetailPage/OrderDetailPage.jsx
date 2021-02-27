@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
-import Barcode from "../../assets/barcode.png";
-import Transfer from "../../assets/transfer.png";
-import Collapse from "../../assets/collapse.png";
+// import Barcode from "../../assets/barcode.png";
+// import Transfer from "../../assets/transfer.png";
+// import Collapse from "../../assets/collapse.png";
 import SKUButton from "./SKUButton";
 import { useHistory } from "react-router-dom";
 import TransferButton from "./TransferButton";
-import { useSelector, useDispatch } from "react-redux";
-import * as OrderActions from "../../store/actions/OrdersActions";
+import { useSelector } from "react-redux";
+// import * as OrderActions from "../../store/actions/OrdersActions";
 import SetPriorityButton from "./SetPriorityButton";
 
 const OrderDetailPage = () => {
-  const history = useHistory();
+  // const history = useHistory();
 
-  const goBack = () => {
-    history.goBack();
-  };
+  // const goBack = () => {
+  //   history.goBack();
+  // };
 
   const order = useSelector((state) => state.orders.order);
 

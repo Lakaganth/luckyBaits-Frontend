@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Switch from "react-switch";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
 
 const SetPriorityButton = ({ orderPrior, orderID }) => {

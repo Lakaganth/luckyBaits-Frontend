@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Dropdown from "react-dropdown";
 import TransferImage from "../../assets/transfer.png";
 import * as OrderActions from "../../store/actions/OrdersActions";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const transferDept = [
   { value: "Assembly", label: "Assembly" },
