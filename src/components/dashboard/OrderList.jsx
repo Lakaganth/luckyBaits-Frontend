@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const OrderList = ({ order }) => {
-
   const {
     // status,
     currentDept,
@@ -28,10 +27,8 @@ const OrderList = ({ order }) => {
       </Data>
 
       <Data>
-
         <p>SKU</p>
         <p>{sku}</p>
-
       </Data>
       <Data>
         <p>Description</p>
@@ -91,22 +88,22 @@ const Data = styled.div`
     padding: 10px 0;
   }
 `;
-const ButtonData = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1fr, 2);
-  /* align-self: center; */
-  /* justify-self: center; */
-  border-right: 1px solid rgba(204, 204, 204, 0.67);
-  padding-right: 10px;
-  button {
-    margin: 0;
-    padding: 0;
-  }
-  p {
-    /* text-align: center; */
-    padding: 10px 0;
-  }
-`;
+// const ButtonData = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(1fr, 2);
+//   /* align-self: center; */
+//   /* justify-self: center; */
+//   border-right: 1px solid rgba(204, 204, 204, 0.67);
+//   padding-right: 10px;
+//   button {
+//     margin: 0;
+//     padding: 0;
+//   }
+//   p {
+//     /* text-align: center; */
+//     padding: 10px 0;
+//   }
+// `;
 
 const Color = styled.div`
   background-color: rgba(39, 35, 255, 0.55);

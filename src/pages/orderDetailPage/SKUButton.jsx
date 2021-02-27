@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
-const SKUButton = ({ sku, order }) => {
+const SKUButton = ({ sku }) => {
   const history = useHistory();
-  const skuParam = { sku, order };
-  // console.log(skuParam);
+
   return (
     <Container>
       <p className="title">SKU</p>

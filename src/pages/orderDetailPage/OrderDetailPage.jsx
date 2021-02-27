@@ -5,7 +5,7 @@ import Navbar from "../../components/navbar/Navbar";
 // import Transfer from "../../assets/transfer.png";
 // import Collapse from "../../assets/collapse.png";
 import SKUButton from "./SKUButton";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import TransferButton from "./TransferButton";
 import { useSelector } from "react-redux";
 // import * as OrderActions from "../../store/actions/OrdersActions";
