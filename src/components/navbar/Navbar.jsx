@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 // import * as AuthActions from "../../store/actions/AuthActions";
 import DefaultAvatar from "../../assets/svg/avatar_default.svg";
 import MenuIcon from "../../assets/svg/menu_icon.svg";
+import Searchbar from "./Searchbar";
 
 const Navbar = () => {
   const authRedux = useSelector((state) => state.auth);
@@ -20,6 +21,7 @@ const Navbar = () => {
         </Name>
       </UserGroup>
       <p>Lucky Strike Baits</p>
+      <Searchbar />
       <div>
         <img src={MenuIcon} alt="" />
       </div>

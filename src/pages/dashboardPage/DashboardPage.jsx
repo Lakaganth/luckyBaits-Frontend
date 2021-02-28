@@ -32,6 +32,7 @@ const currentDept = [
 const DashboardPage = () => {
   const ordersRedux = useSelector((state) => state.orders.orders);
   const priorRedux = useSelector((state) => state.orders.priority);
+  const searchRedux = useSelector((state) => state.orders.search);
   const dispatch = useDispatch();
   const history = useHistory();
   const [pagination, setPagination] = useState(10);
@@ -75,6 +76,19 @@ const DashboardPage = () => {
     dispatch(OrderActions.getAllOrders(pagination, page, priorRedux, dept));
   };
 
+  // const fetchSearchResults = () => {
+  //   dispatch(
+  //     OrderActions.getAllOrders(
+  //       pagination,
+  //       page,
+  //       priorRedux,
+  //       department,
+  //       searchRedux
+  //     )
+  //   );
+  // };
+
+  console.log(searchRedux.length);
   return (
     <Container>
       <Navbar />
@@ -101,19 +115,31 @@ const DashboardPage = () => {
         displayHigh={displayHighPriority}
         displayLow={displayLowPriority}
       />
-      <RecentWorkOrder>
-        {priority ? (
-          <p className="priority-title">High Prioirty Work orders</p>
-        ) : (
-          <p className="priority-title">Low Priority work Orders</p>
-        )}
-        {ordersRedux.length > 0 &&
-          ordersRedux.map((order, index) => (
-            <button key={order._id} onClick={() => onOrderSelect(order)}>
-              <OrderList key={order._id} order={order} />
-            </button>
-          ))}
-      </RecentWorkOrder>
+      {searchRedux.length > 0 ? (
+        <RecentWorkOrder>
+          {ordersRedux.length > 0 &&
+            ordersRedux.map((order, index) => (
+              <button key={order._id} onClick={() => onOrderSelect(order)}>
+                <OrderList key={order._id} order={order} />
+              </button>
+            ))}
+        </RecentWorkOrder>
+      ) : (
+        <RecentWorkOrder>
+          {priority ? (
+            <p className="priority-title">High Prioirty Work orders</p>
+          ) : (
+            <p className="priority-title">Low Priority work Orders</p>
+          )}
+          {ordersRedux.length > 0 &&
+            ordersRedux.map((order, index) => (
+              <button key={order._id} onClick={() => onOrderSelect(order)}>
+                <OrderList key={order._id} order={order} />
+              </button>
+            ))}
+        </RecentWorkOrder>
+      )}
+
       <PageCount>
         <ReactPaginate
           previousLabel={"previous"}

@@ -5,6 +5,7 @@ import {
   CLEAR_BOM,
   TRANSFER_DEPT,
   SET_PRIORITY,
+  SET_SEARCH,
 } from "./../actions/OrdersActions";
 
 const initialState = {
@@ -12,6 +13,10 @@ const initialState = {
   order: "",
   bom: "",
   priority: false,
+  search: "",
+  pagination: 10,
+  page: 1,
+  filter: "all",
 };
 
 const orderReducer = (state = initialState, action) => {
@@ -32,6 +37,8 @@ const orderReducer = (state = initialState, action) => {
       return { ...state, order: action.payload };
     case SET_PRIORITY:
       return { ...state, order: action.payload };
+    case SET_SEARCH:
+      return { ...state, search: action.payload };
     default:
       return state;
   }
