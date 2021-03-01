@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import SearchIcon from "../../assets/search_icon.png";
 import CloseIcon from "../../assets/close.png";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
 
 const Searchbar = () => {
   const [search, setSearch] = useState("");
-  const searchRedux = useSelector((state) => state.orders.search);
+  // const searchRedux = useSelector((state) => state.orders.search);
   const dispatch = useDispatch();
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -18,14 +18,9 @@ const Searchbar = () => {
   };
 
   const fetchSearchResults = () => {
-    dispatch(
-      OrderActions.searchOrders(
-        search
-      )
-    );
+    dispatch(OrderActions.searchOrders(search));
     setSearch("");
   };
-
 
   return (
     <Container onSubmit={handleSearch}>
@@ -39,8 +34,8 @@ const Searchbar = () => {
         {search.length > 0 ? (
           <img src={CloseIcon} alt="Close icon" />
         ) : (
-            <img src={SearchIcon} alt="Search icon" />
-          )}
+          <img src={SearchIcon} alt="Search icon" />
+        )}
       </button>
     </Container>
   );
