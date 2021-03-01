@@ -94,7 +94,7 @@ const PageContainer = styled.div`
 
 const OrderContainer = styled.div`
   width: 90vw;
-  height: 90vh;
+  min-height: 90vh;
   padding: 5vh 5vw;
   background-color: #f0f0f0;
   margin: 0 auto;

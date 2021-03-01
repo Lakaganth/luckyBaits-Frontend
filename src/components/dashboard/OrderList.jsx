@@ -12,18 +12,18 @@ const OrderList = ({ order }) => {
     weeks4,
     ioQty,
     cat,
-    // updatedAt,
+    priority,
     totalNeeded,
     // orderComplete,
     // transfers,
   } = order;
-
+  console.log(typeof priority)
   return (
     <Container>
-      <Color></Color>
+      <Color priority={priority}></Color>
       <Data>
-        <p>Image</p>
-        <p></p>
+        <p>Priority</p>
+        <p>{priority}</p>
       </Data>
 
       <Data>
@@ -106,7 +106,8 @@ const Data = styled.div`
 // `;
 
 const Color = styled.div`
-  background-color: rgba(39, 35, 255, 0.55);
+  background-color: ${({ priority }) => priority === "low" ? "rgba(39, 35, 255, 0.55)" : "rgba(246, 191, 191, 0.69)"};
+  /* background-color: rgba(39, 35, 255, 0.55); */
   position: absolute;
   height: 50px;
   width: 100%;

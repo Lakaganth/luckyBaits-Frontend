@@ -6,10 +6,13 @@ import {
   TRANSFER_DEPT,
   SET_PRIORITY,
   SET_SEARCH,
+  GET_SEARCH_ORDERS,
+  CLEAR_SEARCH
 } from "./../actions/OrdersActions";
 
 const initialState = {
   orders: [],
+  searchOrders: [],
   order: "",
   bom: "",
   priority: false,
@@ -29,6 +32,8 @@ const orderReducer = (state = initialState, action) => {
       };
     case SET_ORDER:
       return { ...state, order: action.payload };
+    case GET_SEARCH_ORDERS:
+      return { ...state, searchOrders: action.payload }
     case GET_SINGLE_BOM:
       return { ...state, bom: action.payload };
     case CLEAR_BOM:
@@ -39,6 +44,8 @@ const orderReducer = (state = initialState, action) => {
       return { ...state, order: action.payload };
     case SET_SEARCH:
       return { ...state, search: action.payload };
+    case CLEAR_SEARCH:
+      return { ...state, search: "", searchOrders: [] }
     default:
       return state;
   }

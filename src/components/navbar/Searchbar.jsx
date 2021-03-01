@@ -8,7 +8,6 @@ import * as OrderActions from "../../store/actions/OrdersActions";
 const Searchbar = () => {
   const [search, setSearch] = useState("");
   const searchRedux = useSelector((state) => state.orders.search);
-  const defaultRedux = useSelector((state) => state.orders);
   const dispatch = useDispatch();
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -20,16 +19,13 @@ const Searchbar = () => {
 
   const fetchSearchResults = () => {
     dispatch(
-      OrderActions.getAllOrders(
-        defaultRedux.pagination,
-        defaultRedux.page,
-        defaultRedux.priority,
-        defaultRedux.filter,
+      OrderActions.searchOrders(
         search
       )
     );
+    setSearch("");
   };
-  console.log(searchRedux.length);
+
 
   return (
     <Container onSubmit={handleSearch}>
@@ -40,11 +36,11 @@ const Searchbar = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
       <button>
-        {searchRedux.length > 0 ? (
+        {search.length > 0 ? (
           <img src={CloseIcon} alt="Close icon" />
         ) : (
-          <img src={SearchIcon} alt="Search icon" />
-        )}
+            <img src={SearchIcon} alt="Search icon" />
+          )}
       </button>
     </Container>
   );

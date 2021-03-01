@@ -69,7 +69,7 @@ const DataContainer = styled.div`
       #6b71ee 42.19%,
       #8a8ffd 100%
     );
-    background-image: url("../../assets/semicircles.png");
+    /* background-image: url("../../assets/semicircles.png"); */
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 21px 21px 0px 0px;
     position: absolute;

@@ -31,6 +31,7 @@ const currentDept = [
 
 const DashboardPage = () => {
   const ordersRedux = useSelector((state) => state.orders.orders);
+  const searchOrders = useSelector((state) => state.orders.searchOrders);
   const priorRedux = useSelector((state) => state.orders.priority);
   const searchRedux = useSelector((state) => state.orders.search);
   const dispatch = useDispatch();
@@ -76,27 +77,20 @@ const DashboardPage = () => {
     dispatch(OrderActions.getAllOrders(pagination, page, priorRedux, dept));
   };
 
-  // const fetchSearchResults = () => {
-  //   dispatch(
-  //     OrderActions.getAllOrders(
-  //       pagination,
-  //       page,
-  //       priorRedux,
-  //       department,
-  //       searchRedux
-  //     )
-  //   );
-  // };
+  const clearSearch = () => {
+    dispatch(OrderActions.clearSearchOrders());
+  }
 
-  console.log(searchRedux.length);
+
   return (
     <Container>
       <Navbar />
       <h3>Dashboard</h3>
       <PaginationSection>
         <div className="set-department">
-          <p>Department</p>
+          <p>Filter by Department</p>
           <Dropdown
+            className="filterDD"
             defaultValue={department}
             onChange={(v) => fetchDepartmentOrder(v.value)}
             options={currentDept}
@@ -106,6 +100,7 @@ const DashboardPage = () => {
           <p>Orders per page</p>
           <Dropdown
             defaultValue={pagination}
+            className="paginationDD"
             onChange={(v) => setPagination(v.value)}
             options={pageOptions}
           />
@@ -115,30 +110,34 @@ const DashboardPage = () => {
         displayHigh={displayHighPriority}
         displayLow={displayLowPriority}
       />
-      {searchRedux.length > 0 ? (
+      {searchOrders.length > 0 ? (
         <RecentWorkOrder>
-          {ordersRedux.length > 0 &&
-            ordersRedux.map((order, index) => (
+          <div className="search-title">
+            <p className="priority-title">Search Orders : {searchRedux}</p>
+            <button onClick={clearSearch}>Clear Search</button>
+          </div>
+          {searchOrders.length > 0 &&
+            searchOrders.map((order, index) => (
               <button key={order._id} onClick={() => onOrderSelect(order)}>
                 <OrderList key={order._id} order={order} />
               </button>
             ))}
         </RecentWorkOrder>
       ) : (
-        <RecentWorkOrder>
-          {priority ? (
-            <p className="priority-title">High Prioirty Work orders</p>
-          ) : (
-            <p className="priority-title">Low Priority work Orders</p>
-          )}
-          {ordersRedux.length > 0 &&
-            ordersRedux.map((order, index) => (
-              <button key={order._id} onClick={() => onOrderSelect(order)}>
-                <OrderList key={order._id} order={order} />
-              </button>
-            ))}
-        </RecentWorkOrder>
-      )}
+          <RecentWorkOrder>
+            {priority ? (
+              <p className="priority-title">High Prioirty Work orders</p>
+            ) : (
+                <p className="priority-title">Low Priority work Orders</p>
+              )}
+            {ordersRedux.length > 0 &&
+              ordersRedux.map((order, index) => (
+                <button key={order._id} onClick={() => onOrderSelect(order)}>
+                  <OrderList key={order._id} order={order} />
+                </button>
+              ))}
+          </RecentWorkOrder>
+        )}
 
       <PageCount>
         <ReactPaginate
@@ -161,7 +160,6 @@ const DashboardPage = () => {
 
 const Container = styled.div`
   width: 100vw;
-
   background-color: #e4eaf5;
   button {
     background-color: transparent;
@@ -186,15 +184,58 @@ const RecentWorkOrder = styled.div`
     text-align: left;
     color: #727272;
   }
+  .search-title{
+    display:flex;
+    justify-content:space-between;
+    button{
+      background: green;
+      border-radius: 10px;
+      padding: 1em;
+      color: white;
+    }
+  }
 `;
 
 const PaginationSection = styled.div`
   display: grid;
   grid-template-columns: 1fr 15vw;
-  margin: 0 5vw;
-  text-align: center;
+  margin: 2vh 5vw;
+  p{
+      font-family: Roboto Medium;
+font-style: normal;
+font-weight: 500;
+font-size: 1.2rem;
+line-height: 28px;
+color: rgba(0, 0, 0, 0.58);
+    }
+  /* text-align: center; */
   .set-department {
-    width: 50%;
+    /* width: 50%; */
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+   
+    .Dropdown-control{
+      background:#2E97D2;
+    }
+  }
+  .Dropdown-arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+  .Dropdown-control {
+    max-width: max(25%, 200px);
+    height: 2em;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background: linear-gradient(180deg, #2ED284 0%, #2CA66B 100%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
   }
 `;
 const PageCount = styled.div``;
