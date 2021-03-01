@@ -3,13 +3,13 @@ import styled from "styled-components";
 import HighPriority from "../../assets/highpriority.png";
 import LowPriority from "../../assets/lowpriority.png";
 
-const PriorityButtons = ({ displayHigh, displayLow }) => {
+const PriorityButtons = ({ displayHigh, displayLow, high, low, total }) => {
   return (
     <Container>
       <DataContainer>
         <div className="title">
           <p className="total">Total work order</p>
-          <p className="total-number">400</p>
+          <p className="total-number">{total}</p>
         </div>
       </DataContainer>
       <div className="priority-buttons">
@@ -17,7 +17,7 @@ const PriorityButtons = ({ displayHigh, displayLow }) => {
           <ButtonContainer fontColor={"#FF2323"}>
             <div>
               <p>High Priority</p>
-              <h3>10</h3>
+              <h3>{high}</h3>
             </div>
             <img src={HighPriority} alt="High PRiority" />
           </ButtonContainer>
@@ -26,7 +26,7 @@ const PriorityButtons = ({ displayHigh, displayLow }) => {
           <ButtonContainer fontColor={"#2723FF"}>
             <div>
               <p>Low Priority</p>
-              <h3>10</h3>
+              <h3>{low}</h3>
             </div>
             <img src={LowPriority} alt="low Priority" />
           </ButtonContainer>

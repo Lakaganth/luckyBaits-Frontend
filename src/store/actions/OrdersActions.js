@@ -15,13 +15,7 @@ export const SET_SEARCH = "SET_SEARCH";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const ERROR = "ERROR";
 
-export const getAllOrders = (
-  pagination,
-  page,
-  priority,
-  filter,
-
-) => {
+export const getAllOrders = (pagination, page, priority, filter) => {
   return async (dispatch) => {
     try {
       const response = await Axios.get(
@@ -36,7 +30,7 @@ export const getAllOrders = (
 };
 
 export const searchOrders = (term) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await Axios.get(
         `${uri}/order/all?pagination=10&page=1&search=${term}`
@@ -46,22 +40,19 @@ export const searchOrders = (term) => {
       return dispatch({ type: GET_SEARCH_ORDERS, payload: orders });
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });
-
     }
-  }
-}
+  };
+};
 
 export const clearSearchOrders = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-
       return dispatch({ type: CLEAR_SEARCH });
     } catch (err) {
-
       return dispatch({ type: ERROR, payload: err });
     }
-  }
-}
+  };
+};
 export const setCurrentOrder = (order) => {
   return async (dispatch) => {
     try {

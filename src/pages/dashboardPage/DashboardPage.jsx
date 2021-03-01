@@ -34,6 +34,9 @@ const DashboardPage = () => {
   const searchOrders = useSelector((state) => state.orders.searchOrders);
   const priorRedux = useSelector((state) => state.orders.priority);
   const searchRedux = useSelector((state) => state.orders.search);
+  const highPriority = useSelector((state) => state.orders.highPriorityOrder);
+  const lowPriority = useSelector((state) => state.orders.lowPriorityOrder);
+  const totalOrders = useSelector((state) => state.orders.totalOrder);
   const dispatch = useDispatch();
   const history = useHistory();
   const [pagination, setPagination] = useState(10);
@@ -79,8 +82,7 @@ const DashboardPage = () => {
 
   const clearSearch = () => {
     dispatch(OrderActions.clearSearchOrders());
-  }
-
+  };
 
   return (
     <Container>
@@ -109,6 +111,9 @@ const DashboardPage = () => {
       <PriorityButtons
         displayHigh={displayHighPriority}
         displayLow={displayLowPriority}
+        high={highPriority}
+        low={lowPriority}
+        total={totalOrders}
       />
       {searchOrders.length > 0 ? (
         <RecentWorkOrder>
@@ -124,20 +129,20 @@ const DashboardPage = () => {
             ))}
         </RecentWorkOrder>
       ) : (
-          <RecentWorkOrder>
-            {priority ? (
-              <p className="priority-title">High Prioirty Work orders</p>
-            ) : (
-                <p className="priority-title">Low Priority work Orders</p>
-              )}
-            {ordersRedux.length > 0 &&
-              ordersRedux.map((order, index) => (
-                <button key={order._id} onClick={() => onOrderSelect(order)}>
-                  <OrderList key={order._id} order={order} />
-                </button>
-              ))}
-          </RecentWorkOrder>
-        )}
+        <RecentWorkOrder>
+          {priority ? (
+            <p className="priority-title">High Priority Work orders</p>
+          ) : (
+            <p className="priority-title">Low Priority work Orders</p>
+          )}
+          {ordersRedux.length > 0 &&
+            ordersRedux.map((order, index) => (
+              <button key={order._id} onClick={() => onOrderSelect(order)}>
+                <OrderList key={order._id} order={order} />
+              </button>
+            ))}
+        </RecentWorkOrder>
+      )}
 
       <PageCount>
         <ReactPaginate
@@ -184,10 +189,10 @@ const RecentWorkOrder = styled.div`
     text-align: left;
     color: #727272;
   }
-  .search-title{
-    display:flex;
-    justify-content:space-between;
-    button{
+  .search-title {
+    display: flex;
+    justify-content: space-between;
+    button {
       background: green;
       border-radius: 10px;
       padding: 1em;
@@ -200,23 +205,23 @@ const PaginationSection = styled.div`
   display: grid;
   grid-template-columns: 1fr 15vw;
   margin: 2vh 5vw;
-  p{
-      font-family: Roboto Medium;
-font-style: normal;
-font-weight: 500;
-font-size: 1.2rem;
-line-height: 28px;
-color: rgba(0, 0, 0, 0.58);
-    }
+  p {
+    font-family: Roboto Medium;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.58);
+  }
   /* text-align: center; */
   .set-department {
     /* width: 50%; */
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     justify-content: center;
-   
-    .Dropdown-control{
-      background:#2E97D2;
+
+    .Dropdown-control {
+      background: #2e97d2;
     }
   }
   .Dropdown-arrow-wrapper {
@@ -233,7 +238,7 @@ color: rgba(0, 0, 0, 0.58);
     justify-content: center;
     align-items: center;
     color: #fff;
-    background: linear-gradient(180deg, #2ED284 0%, #2CA66B 100%);
+    background: linear-gradient(180deg, #2ed284 0%, #2ca66b 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
   }

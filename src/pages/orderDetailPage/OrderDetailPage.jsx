@@ -19,6 +19,8 @@ const OrderDetailPage = () => {
   // };
 
   const order = useSelector((state) => state.orders.order);
+  const high = useSelector((state) => state.orders.highPriorityOrder);
+  console.log(high);
 
   console.log(order);
   return (

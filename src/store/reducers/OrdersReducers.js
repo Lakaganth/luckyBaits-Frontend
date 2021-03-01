@@ -7,7 +7,7 @@ import {
   SET_PRIORITY,
   SET_SEARCH,
   GET_SEARCH_ORDERS,
-  CLEAR_SEARCH
+  CLEAR_SEARCH,
 } from "./../actions/OrdersActions";
 
 const initialState = {
@@ -20,6 +20,9 @@ const initialState = {
   pagination: 10,
   page: 1,
   filter: "all",
+  totalOrder: 0,
+  highPriorityOrder: 0,
+  lowPriorityOrder: 0,
 };
 
 const orderReducer = (state = initialState, action) => {
@@ -33,7 +36,7 @@ const orderReducer = (state = initialState, action) => {
     case SET_ORDER:
       return { ...state, order: action.payload };
     case GET_SEARCH_ORDERS:
-      return { ...state, searchOrders: action.payload }
+      return { ...state, searchOrders: action.payload };
     case GET_SINGLE_BOM:
       return { ...state, bom: action.payload };
     case CLEAR_BOM:
@@ -41,11 +44,17 @@ const orderReducer = (state = initialState, action) => {
     case TRANSFER_DEPT:
       return { ...state, order: action.payload };
     case SET_PRIORITY:
-      return { ...state, order: action.payload };
+      return {
+        ...state,
+        order: action.payload.order,
+        totalOrder: action.payload.docCount,
+        highPriorityOrder: action.payload.highOrderCount,
+        lowPriorityOrder: action.payload.lowOrderCount,
+      };
     case SET_SEARCH:
       return { ...state, search: action.payload };
     case CLEAR_SEARCH:
-      return { ...state, search: "", searchOrders: [] }
+      return { ...state, search: "", searchOrders: [] };
     default:
       return state;
   }
