@@ -15,6 +15,7 @@ const SetPriorityButton = ({ orderPrior, orderID }) => {
     setPriority(!priority);
     dispatch(OrderActions.setOrderPriority(!priority, orderID));
   };
+  
   return (
     <Container>
       <p>Current Priority</p>

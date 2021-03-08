@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Dropdown from "react-dropdown";
+import { useDispatch } from "react-redux";
+import * as OrderActions from "../../store/actions/OrdersActions";
+import { useHistory } from "react-router-dom";
+import Switch from "react-switch";
+// import { useSelector } from "react-redux";
+
+const transferDept = [
+  { value: "Assembly", label: "Assembly" },
+  { value: "Painting", label: "Painting" },
+  { value: "Home Worker", label: "Home Worker" },
+  { value: "Plating", label: "Plating" },
+  { value: "Stamping", label: "Stamping" },
+  { value: "Nets", label: "Nets" },
+  { value: "Purchasing", label: "Purchasing" },
+];
 
 const OrderList = ({ order }) => {
+  const history = useHistory();
   const {
-    // status,
+    _id,
     currentDept,
-    // _id,
     sku,
     description,
     weeks2,
@@ -14,56 +30,76 @@ const OrderList = ({ order }) => {
     cat,
     priority,
     totalNeeded,
-    // orderComplete,
-    // transfers,
   } = order;
-  console.log(typeof priority)
+  const [currPriority, setPriority] = useState(() =>
+    priority === "high" ? true : false
+  );
+  const dispatch = useDispatch();
+
+  const setCurrDept = (newDept) => {
+    dispatch(OrderActions.transferDept(newDept, currentDept, _id));
+  };
+
+  const setPrior = () => {
+    setPriority(!currPriority);
+    dispatch(OrderActions.setOrderPriority(!currPriority, _id));
+  };
+
   return (
-    <Container>
-      <Color priority={priority}></Color>
+    <ListContainer>
       <Data>
-        <p>Priority</p>
-        <p>{priority}</p>
+        <Switch onChange={setPrior} checked={currPriority} />
       </Data>
 
       <Data>
-        <p>SKU</p>
-        <p>{sku}</p>
+        <button
+          onClick={() =>
+            history.push({
+              pathname: `/bom/${sku}`,
+            })
+          }
+        >
+          {sku}
+        </button>
       </Data>
       <Data>
-        <p>Description</p>
         <p>{description}</p>
       </Data>
       <Data>
-        <p>2 Weeks</p>
         <p>{weeks2}</p>
       </Data>
       <Data>
-        <p>4 Weeks</p>
         <p>{weeks4}</p>
       </Data>
       <Data>
-        <p>Department</p>
-        <p>{currentDept}</p>
+        {/* <p>{currentDept}</p> */}
+        <Dropdown
+          className="transferDD"
+          defaultValue={currentDept}
+          placeholder={currentDept}
+          onChange={(v) => {
+            // setChange(true);
+            setCurrDept(v.value);
+          }}
+          options={transferDept}
+        />
       </Data>
       <Data>
-        <p>Inbound Order QTY</p>
         <p>{ioQty}</p>
       </Data>
       <Data>
-        <p>CAT</p>
         <p>{cat}</p>
       </Data>
       <Data>
-        <p>Total Needed</p>
         <p>{totalNeeded}</p>
       </Data>
-    </Container>
+    </ListContainer>
   );
 };
-const Container = styled.div`
+
+const ListContainer = styled.div`
   width: 100%;
-  min-height: 10vh;
+  min-height: 12vh;
   background-color: #fff;
   border-radius: 19px;
   background: #f4f4f4;
@@ -71,21 +107,26 @@ const Container = styled.div`
   margin: 25px 10px;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(9, 10vw);
   /* justify-content: center;
   align-content: center; */
 `;
 
 const Data = styled.div`
   display: grid;
-  grid-template-columns: repeat(1fr, 2);
+  /* grid-template-columns: repeat(1fr, 2); */
   align-self: center;
   justify-self: center;
-  border-right: 1px solid rgba(204, 204, 204, 0.67);
+  /* border-right: 1px solid rgba(204, 204, 204, 0.67); */
   /* padding-right: 10px; */
   p {
     text-align: center;
     padding: 10px 0;
+  }
+  button {
+    text-align: center;
+    font-size: 1.1rem;
+    /* padding: 10px 0;*/
   }
 `;
 // const ButtonData = styled.div`
@@ -104,15 +145,5 @@ const Data = styled.div`
 //     padding: 10px 0;
 //   }
 // `;
-
-const Color = styled.div`
-  background-color: ${({ priority }) => priority === "low" ? "rgba(39, 35, 255, 0.55)" : "rgba(246, 191, 191, 0.69)"};
-  /* background-color: rgba(39, 35, 255, 0.55); */
-  position: absolute;
-  height: 50px;
-  width: 100%;
-  border-top-left-radius: 19px;
-  border-top-right-radius: 19px;
-`;
 
 export default OrderList;

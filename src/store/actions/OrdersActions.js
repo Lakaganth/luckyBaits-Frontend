@@ -1,10 +1,11 @@
 import Axios from "axios";
 
-const uri = "https://luckybait.herokuapp.com";
-// const uri = "http://localhost:5000";
+// const uri = "https://luckybait.herokuapp.com";
+const uri = "http://localhost:5000";
 
 export const GET_ALL_ORDERS = "GET_ALL_ORDERS";
 export const GET_ORDER = "GET_ORDER";
+export const GET_DEPT_ORDER = "GET_DEPT_ORDER";
 export const SET_ORDER = "SET_ORDER";
 export const GET_SEARCH_ORDERS = "GET_SEARCH_ORDERS";
 export const GET_SINGLE_BOM = "GET_SINGLE_BOM";
@@ -13,16 +14,58 @@ export const SET_PRIORITY = "SET_PRIORITY";
 export const CLEAR_BOM = "CLEAR_BOM";
 export const SET_SEARCH = "SET_SEARCH";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
+export const CLEAR_ORDERS = "CLEAR_ORDERS";
 export const ERROR = "ERROR";
 
-export const getAllOrders = (pagination, page, priority, filter) => {
+export const getAllOrders = (pagination = 25, page, priority, filter) => {
   return async (dispatch) => {
     try {
       const response = await Axios.get(
+        // `${uri}/order/all?prior=${priority}&filter=${filter}&search=`
         `${uri}/order/all?pagination=${pagination}&page=${page}&prior=${priority}&filter=${filter}&search=`
       );
       const orders = await response.data;
+
       return dispatch({ type: GET_ALL_ORDERS, payload: { orders, priority } });
+    } catch (err) {
+      return dispatch({ type: ERROR, payload: err });
+    }
+  };
+};
+
+export const filterByDept = (pagination = 25, page, priority, filter) => {
+  return async (dispatch) => {
+    try {
+      if (filter !== "all") {
+        const response = await Axios.get(
+          `${uri}/order/all?pagination=${pagination}&page=${page}&prior=${priority}&filter=${filter}&search=`
+        );
+
+        const deptOrders = await response.data;
+        console.log("call");
+        return dispatch({ type: GET_DEPT_ORDER, payload: deptOrders });
+      } else {
+        console.log("all dept", filter);
+        const response = await Axios.get(
+          `${uri}/order/all?pagination=${pagination}&page=${page}&prior=${priority}&filter=${filter}&search=`
+        );
+        const orders = await response.data;
+        return dispatch({
+          type: GET_ALL_ORDERS,
+          payload: { orders, priority },
+        });
+      }
+    } catch (err) {
+      return dispatch({ type: ERROR, payload: err });
+    }
+  };
+};
+
+export const clearOrders = () => {
+  return async (dispatch) => {
+    try {
+      console.log("Clearing orders");
+      return dispatch({ type: CLEAR_ORDERS });
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });
     }
@@ -109,11 +152,11 @@ export const transferDept = (newCurrDept, prevDept, orderId) => {
   };
 };
 
-export const setOrderPriority = (p, id) => {
+export const setOrderPriority = (prior, id) => {
   return async (dispatch) => {
     try {
       const response = await Axios.post(
-        `${uri}/order/priority/${id}?prior=${p}`
+        `${uri}/order/priority/${id}?prior=${prior}`
       );
       const order = await response.data;
       return dispatch({ type: SET_PRIORITY, payload: order });

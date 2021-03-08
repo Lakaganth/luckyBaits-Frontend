@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
@@ -7,16 +7,17 @@ import Navbar from "../../components/navbar/Navbar";
 import { useHistory } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-import ReactPaginate from "react-paginate";
-import PriorityButtons from "../../components/dashboard/PriorityButtons";
 
-const pageOptions = [
-  { value: 10, label: "10" },
-  { value: 20, label: "20" },
-  { value: 30, label: "30" },
-  { value: 40, label: "40" },
-  { value: 50, label: "50" },
-];
+import PriorityButtons from "../../components/dashboard/PriorityButtons";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+// const pageOptions = [
+//   { value: 10, label: "10" },
+//   { value: 20, label: "20" },
+//   { value: 30, label: "30" },
+//   { value: 40, label: "40" },
+//   { value: 50, label: "50" },
+// ];
 
 const currentDept = [
   { value: "all", label: "All" },
@@ -37,35 +38,54 @@ const DashboardPage = () => {
   const highPriority = useSelector((state) => state.orders.highPriorityOrder);
   const lowPriority = useSelector((state) => state.orders.lowPriorityOrder);
   const totalOrders = useSelector((state) => state.orders.totalOrder);
+  const [hasMore, setHasMore] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
-  const [pagination, setPagination] = useState(10);
+  const [loading, setLoading] = useState(false);
+  // const [pagination, setPagination] = useState(10);
   const [page, setPage] = useState(1);
   const [priority, setPriority] = useState(priorRedux);
   const [department, setDepartment] = useState("all");
 
+  const fetchDepartmentOrder = (dept) => {
+    setDepartment(dept);
+    dispatch(OrderActions.clearOrders());
+    dispatch(OrderActions.filterByDept(25, page, priority, dept));
+  };
+
+  // const filteredOrder = ordersRedux.filter(
+  //   (order) => order.currentDept === department
+  // );
+  // console.log(ordersRedux);
+
   useEffect(() => {
     const getAllOrders = async () => {
-      dispatch(
-        OrderActions.getAllOrders(pagination, page, priority, department)
-      );
+      setLoading(true);
+      dispatch(OrderActions.getAllOrders(25, 1, priority, department));
+      setLoading(false);
     };
     getAllOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page, dispatch, department, priority]);
+
+  console.log(department);
+  const updatePage = (e) => {
+    if (department === "all") {
+      setPage((prev) => prev + 1);
+    } else {
+      setHasMore(false);
+      setPage(1);
+      // dispatch(OrderActions.getAllOrders(25, page, priority, department));
+    }
+  };
 
   const displayHighPriority = async () => {
     setPriority(true);
-    await dispatch(
-      OrderActions.getAllOrders(pagination, page, true, department)
-    );
+    await dispatch(OrderActions.getAllOrders(25, page, true, department));
   };
 
   const displayLowPriority = async () => {
     setPriority(false);
-    await dispatch(
-      OrderActions.getAllOrders(pagination, page, false, department)
-    );
+    await dispatch(OrderActions.getAllOrders(25, page, false, department));
   };
 
   const onOrderSelect = async (order) => {
@@ -73,11 +93,6 @@ const DashboardPage = () => {
     history.push({
       pathname: `/orders/${order._id}`,
     });
-  };
-
-  const fetchDepartmentOrder = (dept) => {
-    setDepartment(dept);
-    dispatch(OrderActions.getAllOrders(pagination, page, priorRedux, dept));
   };
 
   const clearSearch = () => {
@@ -96,15 +111,6 @@ const DashboardPage = () => {
             defaultValue={department}
             onChange={(v) => fetchDepartmentOrder(v.value)}
             options={currentDept}
-          />
-        </div>
-        <div>
-          <p>Orders per page</p>
-          <Dropdown
-            defaultValue={pagination}
-            className="paginationDD"
-            onChange={(v) => setPagination(v.value)}
-            options={pageOptions}
           />
         </div>
       </PaginationSection>
@@ -129,37 +135,45 @@ const DashboardPage = () => {
             ))}
         </RecentWorkOrder>
       ) : (
-        <RecentWorkOrder>
-          {priority ? (
-            <p className="priority-title">High Priority Work orders</p>
-          ) : (
-            <p className="priority-title">Low Priority work Orders</p>
-          )}
-          {ordersRedux.length > 0 &&
-            ordersRedux.map((order, index) => (
-              <button key={order._id} onClick={() => onOrderSelect(order)}>
-                <OrderList key={order._id} order={order} />
-              </button>
-            ))}
-        </RecentWorkOrder>
+        <InfiniteScroll
+          dataLength={ordersRedux.length}
+          next={() => updatePage(department)}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+        >
+          <RecentWorkOrder>
+            {priority ? (
+              <p className="priority-title">High Priority Work orders</p>
+            ) : (
+              <p className="priority-title">Low Priority work Orders</p>
+            )}
+            <Header priority={priority} />
+            {ordersRedux.length > 0 &&
+              ordersRedux.map((order, index) => (
+                <OrderList key={index} order={order} />
+              ))}
+          </RecentWorkOrder>
+        </InfiniteScroll>
       )}
-
-      <PageCount>
-        <ReactPaginate
-          previousLabel={"previous"}
-          nextLabel={"next"}
-          breakLabel={"..."}
-          breakClassName={"break-me"}
-          pageCount={3337 / pagination}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={(p) => setPage(p.selected)}
-          containerClassName={"pagination"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"}
-        />
-      </PageCount>
+      {loading && <Loading>Loading ...</Loading>}
     </Container>
+  );
+};
+
+const Header = ({ priority }) => {
+  return (
+    <Color priority={priority}>
+      <p>Priority</p>
+
+      <p>SKU</p>
+      <p>Description</p>
+      <p>2 Weeks</p>
+      <p>4 Weeks</p>
+      <p>Department</p>
+      <p>Inbound Order QTY</p>
+      <p>CAT</p>
+      <p>Total Needed</p>
+    </Color>
   );
 };
 
@@ -174,9 +188,34 @@ const Container = styled.div`
     color: black;
   }
 `;
+const Loading = styled.div`
+  width: 200px;
+  margin: 20px auto;
+  text-align: center;
+`;
+const Color = styled.div`
+  /* background-color: ${({ priority }) =>
+    priority === "low"
+      ? "rgba(39, 35, 255, 0.55)"
+      : "rgba(246, 191, 191, 0.69)"}; */
+  background-color: rgba(39, 35, 255, 0.55);
+  /* position: relative; */
+  min-height: 10vh;
+  width: 100%;
+  border-radius: 19px;
+  margin: 25px 10px;
+
+  display: grid;
+  grid-template-columns: repeat(9, 10vw);
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  /* font-size: 1.2rem; */
+`;
 
 const RecentWorkOrder = styled.div`
-  width: 90%;
+  width: 90vw;
   background-color: #e4eaf5;
   margin: 5vh auto;
   .priority-title {
@@ -243,6 +282,6 @@ const PaginationSection = styled.div`
     border-radius: 8px;
   }
 `;
-const PageCount = styled.div``;
+// const PageCount = styled.div``;
 
 export default DashboardPage;

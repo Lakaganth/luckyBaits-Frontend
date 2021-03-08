@@ -20,7 +20,7 @@ const Navbar = () => {
           <p>{name}</p>
         </Name>
       </UserGroup>
-      <p>Lucky Strike Baits</p>
+      <p>Lucky Strike Bait Works</p>
       <Searchbar />
       <div>
         <img src={MenuIcon} alt="" />

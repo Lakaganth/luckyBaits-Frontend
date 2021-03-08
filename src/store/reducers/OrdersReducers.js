@@ -8,11 +8,14 @@ import {
   SET_SEARCH,
   GET_SEARCH_ORDERS,
   CLEAR_SEARCH,
+  CLEAR_ORDERS,
+  GET_DEPT_ORDER,
 } from "./../actions/OrdersActions";
 
 const initialState = {
   orders: [],
   searchOrders: [],
+  deptOrder: [],
   order: "",
   bom: "",
   priority: false,
@@ -28,10 +31,22 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_ORDERS:
+      console.log(action.payload.orders);
       return {
         ...state,
-        orders: action.payload.orders,
+        orders: [...state.orders, ...action.payload.orders.order],
+        totalOrder: action.payload.orders.countData.count,
+        highPriorityOrder: action.payload.orders.countData.highOrderCount,
+        lowPriorityOrder: action.payload.orders.countData.lowOrderCount,
         priority: action.payload.priority,
+      };
+    case GET_DEPT_ORDER:
+      return {
+        ...state,
+        orders: action.payload.deptOrders.order,
+        totalOrder: action.payload.deptOrders.countData.count,
+        highPriorityOrder: action.payload.deptOrders.countData.highOrderCount,
+        lowPriorityOrder: action.payload.deptOrders.countData.lowOrderCount,
       };
     case SET_ORDER:
       return { ...state, order: action.payload };
@@ -53,6 +68,8 @@ const orderReducer = (state = initialState, action) => {
       };
     case SET_SEARCH:
       return { ...state, search: action.payload };
+    case CLEAR_ORDERS:
+      return { ...state, orders: [] };
     case CLEAR_SEARCH:
       return { ...state, search: "", searchOrders: [] };
     default:
