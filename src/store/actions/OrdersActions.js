@@ -1,7 +1,7 @@
 import Axios from "axios";
 
-// const uri = "https://luckybait.herokuapp.com";
-const uri = "http://localhost:5000";
+const uri = "https://luckybait.herokuapp.com";
+// const uri = "http://localhost:5000";
 
 export const GET_ALL_ORDERS = "GET_ALL_ORDERS";
 export const GET_ORDER = "GET_ORDER";
