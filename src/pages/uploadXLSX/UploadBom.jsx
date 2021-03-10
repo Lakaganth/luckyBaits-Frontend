@@ -31,10 +31,10 @@ const UploadBom = () => {
         setbBomDataXL(data);
       };
     } catch (err) {
-      console.log(err);
       setErr(err);
     }
   };
+  console.log(err);
 
   const handleSubmit = (e) => {
     e.preventDefault();

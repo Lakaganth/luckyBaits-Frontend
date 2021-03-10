@@ -61,6 +61,7 @@ const orderReducer = (state = initialState, action) => {
         highPriorityOrder: 0,
         lowPriorityOrder: 0,
       };
+
     case SET_ORDER:
       return { ...state, order: action.payload };
     case GET_SEARCH_ORDERS:
