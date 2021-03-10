@@ -4,6 +4,7 @@ import HighPriority from "../../assets/highpriority.png";
 import LowPriority from "../../assets/lowpriority.png";
 
 const PriorityButtons = ({ displayHigh, displayLow, high, low, total }) => {
+  console.log(total);
   return (
     <Container>
       <DataContainer>

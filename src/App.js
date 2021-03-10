@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 // import * as AuthActions from './store/actions/AuthActions'
 import OrderDetailPage from "./pages/orderDetailPage/OrderDetailPage";
 import SkuDetailPAge from "./pages/skuPage/SkuDetailPage";
+import UploadXlsx from "./pages/uploadXLSX/UploadXlsx";
 
 const App = () => {
   const location = useLocation();
@@ -24,6 +25,7 @@ const App = () => {
         />
         <Route path="/orders/:id" component={OrderDetailPage} />
         <Route path="/bom/:sku" component={SkuDetailPAge} />
+        <Route path="/upload" component={UploadXlsx} />
 
         {/* <Route exact path="/" component={DashboardPage} /> */}
       </Switch>

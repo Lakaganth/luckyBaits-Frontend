@@ -14,6 +14,7 @@ import {
 
 const initialState = {
   orders: [],
+  orderLength: 0,
   searchOrders: [],
   deptOrder: [],
   order: "",
@@ -31,11 +32,12 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_ORDERS:
-      console.log(action.payload.orders);
+      console.log(action.payload.orders.countData.count);
       return {
         ...state,
         orders: [...state.orders, ...action.payload.orders.order],
-        totalOrder: action.payload.orders.countData.count,
+        orderLength: action.payload.orders.orderLength,
+        totalOrder: action.payload.orders.countData.docCount,
         highPriorityOrder: action.payload.orders.countData.highOrderCount,
         lowPriorityOrder: action.payload.orders.countData.lowOrderCount,
         priority: action.payload.priority,
@@ -43,8 +45,9 @@ const orderReducer = (state = initialState, action) => {
     case GET_DEPT_ORDER:
       return {
         ...state,
-        orders: action.payload.deptOrders.order,
-        totalOrder: action.payload.deptOrders.countData.count,
+        orders: [...state.orders, ...action.payload.orders.order],
+        orderLength: action.payload.orders.orderLength,
+        totalOrder: action.payload.deptOrders.countData.docCount,
         highPriorityOrder: action.payload.deptOrders.countData.highOrderCount,
         lowPriorityOrder: action.payload.deptOrders.countData.lowOrderCount,
       };

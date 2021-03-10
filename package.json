@@ -21,7 +21,8 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1",
     "styled-media-query": "^2.1.2",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "xlsx": "^0.16.9"
   },
   "scripts": {
     "start": "react-scripts start",

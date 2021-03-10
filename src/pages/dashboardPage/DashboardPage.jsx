@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
@@ -38,6 +38,7 @@ const DashboardPage = () => {
   const highPriority = useSelector((state) => state.orders.highPriorityOrder);
   const lowPriority = useSelector((state) => state.orders.lowPriorityOrder);
   const totalOrders = useSelector((state) => state.orders.totalOrder);
+  const orderLength = useSelector((state) => state.orders.orderLength);
   const [hasMore, setHasMore] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -49,42 +50,44 @@ const DashboardPage = () => {
 
   const fetchDepartmentOrder = (dept) => {
     setDepartment(dept);
+    setPage(1);
     dispatch(OrderActions.clearOrders());
     dispatch(OrderActions.filterByDept(25, page, priority, dept));
   };
-
-  // const filteredOrder = ordersRedux.filter(
-  //   (order) => order.currentDept === department
-  // );
-  // console.log(ordersRedux);
 
   useEffect(() => {
     const getAllOrders = async () => {
       setLoading(true);
       dispatch(OrderActions.getAllOrders(25, 1, priority, department));
+
       setLoading(false);
     };
     getAllOrders();
   }, [page, dispatch, department, priority]);
 
-  console.log(department);
+  console.log(orderLength);
   const updatePage = (e) => {
-    if (department === "all") {
-      setPage((prev) => prev + 1);
+    // setPage((prev) => prev + 1);
+    if (orderLength && orderLength >= 24) {
+      setHasMore(true);
+      return setPage((prev) => prev + 1);
     } else {
       setHasMore(false);
       setPage(1);
-      // dispatch(OrderActions.getAllOrders(25, page, priority, department));
     }
   };
 
   const displayHighPriority = async () => {
     setPriority(true);
+    setPage(1);
+    dispatch(OrderActions.clearOrders());
     await dispatch(OrderActions.getAllOrders(25, page, true, department));
   };
 
   const displayLowPriority = async () => {
     setPriority(false);
+    setPage(1);
+    dispatch(OrderActions.clearOrders());
     await dispatch(OrderActions.getAllOrders(25, page, false, department));
   };
 
@@ -98,6 +101,8 @@ const DashboardPage = () => {
   const clearSearch = () => {
     dispatch(OrderActions.clearSearchOrders());
   };
+
+  console.log(totalOrders);
 
   return (
     <Container>
@@ -137,7 +142,7 @@ const DashboardPage = () => {
       ) : (
         <InfiniteScroll
           dataLength={ordersRedux.length}
-          next={() => updatePage(department)}
+          next={() => updatePage()}
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
         >

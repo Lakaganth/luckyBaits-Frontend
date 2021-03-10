@@ -25,7 +25,7 @@ export const getAllOrders = (pagination = 25, page, priority, filter) => {
         `${uri}/order/all?pagination=${pagination}&page=${page}&prior=${priority}&filter=${filter}&search=`
       );
       const orders = await response.data;
-
+      console.log(orders);
       return dispatch({ type: GET_ALL_ORDERS, payload: { orders, priority } });
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });
@@ -42,7 +42,7 @@ export const filterByDept = (pagination = 25, page, priority, filter) => {
         );
 
         const deptOrders = await response.data;
-        console.log("call");
+
         return dispatch({ type: GET_DEPT_ORDER, payload: deptOrders });
       } else {
         console.log("all dept", filter);
