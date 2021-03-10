@@ -30,10 +30,10 @@ const UploadOrders = () => {
         setData(data);
       };
     } catch (err) {
-      console.log(err);
       setErr(err);
     }
   };
+  console.log(errorxl);
 
   const handleSubmit = (e) => {
     e.preventDefault();
