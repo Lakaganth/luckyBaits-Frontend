@@ -15,7 +15,62 @@ export const CLEAR_BOM = "CLEAR_BOM";
 export const SET_SEARCH = "SET_SEARCH";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const CLEAR_ORDERS = "CLEAR_ORDERS";
+export const DELETE_ALL_ORDERS = "DELETE_ALL_ORDERS";
+export const DELETE_ALL_BOM = "DELETE_ALL_BOM";
 export const ERROR = "ERROR";
+
+export const uploadOrders = (orderList) => {
+  return async (dispatch) => {
+    console.log(orderList.length);
+    let i,
+      j,
+      temparray,
+      chunk = 100;
+    let response,
+      orders = [];
+    for (i = 0, j = orderList.length; i < j; i += chunk) {
+      temparray = orderList.slice(i, i + chunk);
+      // console.log(temparray);
+      response = await Axios.post(`${uri}/order/uploadorders`, temparray);
+      // console.log(response.data)
+      orders.push(...response.data);
+    }
+
+    // const orders = response.data;
+  };
+};
+
+export const uploadBom = (BomList) => {
+  return async (dispatch) => {
+    console.log(BomList.length);
+    let i,
+      j,
+      temparray,
+      chunk = 50;
+    let response,
+      orders = [];
+    for (i = 0, j = BomList.length; i < j; i += chunk) {
+      temparray = BomList.slice(i, i + chunk);
+      console.log(temparray);
+      response = await Axios.post(`${uri}/order/uploadBom`, temparray);
+      // console.log(response.data)
+      orders.push(...response.data);
+    }
+  };
+};
+
+export const deleteOrders = () => {
+  return async (dispatch) => {
+    await Axios.get(`${uri}/order/deleteorders`);
+    return dispatch({ type: DELETE_ALL_ORDERS });
+  };
+};
+
+export const deleteBom = () => {
+  return async (dispatch) => {
+    await Axios.get(`${uri}/order/deleteBom`);
+  };
+};
 
 export const getAllOrders = (pagination = 25, page, priority, filter) => {
   return async (dispatch) => {

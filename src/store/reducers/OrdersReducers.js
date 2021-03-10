@@ -10,6 +10,7 @@ import {
   CLEAR_SEARCH,
   CLEAR_ORDERS,
   GET_DEPT_ORDER,
+  DELETE_ALL_ORDERS,
 } from "./../actions/OrdersActions";
 
 const initialState = {
@@ -50,6 +51,15 @@ const orderReducer = (state = initialState, action) => {
         totalOrder: action.payload.deptOrders.countData.docCount,
         highPriorityOrder: action.payload.deptOrders.countData.highOrderCount,
         lowPriorityOrder: action.payload.deptOrders.countData.lowOrderCount,
+      };
+    case DELETE_ALL_ORDERS:
+      return {
+        ...state,
+        orders: [],
+        orderLength: 0,
+        totalOrder: 0,
+        highPriorityOrder: 0,
+        lowPriorityOrder: 0,
       };
     case SET_ORDER:
       return { ...state, order: action.payload };
