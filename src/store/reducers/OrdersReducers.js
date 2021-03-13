@@ -11,6 +11,7 @@ import {
   CLEAR_ORDERS,
   GET_DEPT_ORDER,
   DELETE_ALL_ORDERS,
+  GET_ALL_ORDERS_STOP,
 } from "./../actions/OrdersActions";
 
 const initialState = {
@@ -28,12 +29,12 @@ const initialState = {
   totalOrder: 0,
   highPriorityOrder: 0,
   lowPriorityOrder: 0,
+  hasMore: true,
 };
 
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_ORDERS:
-      console.log(action.payload.orders.countData.count);
       return {
         ...state,
         orders: [...state.orders, ...action.payload.orders.order],
@@ -42,6 +43,18 @@ const orderReducer = (state = initialState, action) => {
         highPriorityOrder: action.payload.orders.countData.highOrderCount,
         lowPriorityOrder: action.payload.orders.countData.lowOrderCount,
         priority: action.payload.priority,
+        hasMore: true,
+      };
+    case GET_ALL_ORDERS_STOP:
+      return {
+        ...state,
+        orders: [...state.orders, ...action.payload.orders.order],
+        orderLength: action.payload.orders.orderLength,
+        totalOrder: action.payload.orders.countData.docCount,
+        highPriorityOrder: action.payload.orders.countData.highOrderCount,
+        lowPriorityOrder: action.payload.orders.countData.lowOrderCount,
+        priority: action.payload.priority,
+        hasMore: false,
       };
     case GET_DEPT_ORDER:
       return {
@@ -51,6 +64,7 @@ const orderReducer = (state = initialState, action) => {
         totalOrder: action.payload.deptOrders.countData.docCount,
         highPriorityOrder: action.payload.deptOrders.countData.highOrderCount,
         lowPriorityOrder: action.payload.deptOrders.countData.lowOrderCount,
+        hasMore: true,
       };
     case DELETE_ALL_ORDERS:
       return {
@@ -65,13 +79,21 @@ const orderReducer = (state = initialState, action) => {
     case SET_ORDER:
       return { ...state, order: action.payload };
     case GET_SEARCH_ORDERS:
-      return { ...state, searchOrders: action.payload };
+      return {
+        ...state,
+        searchOrders: action.payload.order,
+        orderLength: action.payload.orderLength,
+      };
     case GET_SINGLE_BOM:
       return { ...state, bom: action.payload };
     case CLEAR_BOM:
       return { ...state, bom: "" };
     case TRANSFER_DEPT:
-      return { ...state, order: action.payload };
+      return {
+        ...state,
+        order: action.payload,
+        //  hasMore: true,
+      };
     case SET_PRIORITY:
       return {
         ...state,
@@ -79,13 +101,14 @@ const orderReducer = (state = initialState, action) => {
         totalOrder: action.payload.docCount,
         highPriorityOrder: action.payload.highOrderCount,
         lowPriorityOrder: action.payload.lowOrderCount,
+        // hasMore: true,
       };
     case SET_SEARCH:
       return { ...state, search: action.payload };
     case CLEAR_ORDERS:
-      return { ...state, orders: [] };
+      return { ...state, orders: [], hasMore: true };
     case CLEAR_SEARCH:
-      return { ...state, search: "", searchOrders: [] };
+      return { ...state, search: "", searchOrders: [], hasMore: true };
     default:
       return state;
   }

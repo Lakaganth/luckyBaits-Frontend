@@ -1,9 +1,10 @@
 import Axios from "axios";
 
-const uri = "https://luckybait.herokuapp.com";
-// const uri = "http://localhost:5000";
+// const uri = "https://luckybait.herokuapp.com";
+const uri = "http://localhost:5000";
 
 export const GET_ALL_ORDERS = "GET_ALL_ORDERS";
+export const GET_ALL_ORDERS_STOP = "GET_ALL_ORDERS_STOP";
 export const GET_ORDER = "GET_ORDER";
 export const GET_DEPT_ORDER = "GET_DEPT_ORDER";
 export const SET_ORDER = "SET_ORDER";
@@ -76,12 +77,20 @@ export const getAllOrders = (pagination = 25, page, priority, filter) => {
   return async (dispatch) => {
     try {
       const response = await Axios.get(
-        // `${uri}/order/all?prior=${priority}&filter=${filter}&search=`
         `${uri}/order/all?pagination=${pagination}&page=${page}&prior=${priority}&filter=${filter}&search=`
       );
       const orders = await response.data;
-      console.log(orders);
-      return dispatch({ type: GET_ALL_ORDERS, payload: { orders, priority } });
+      if (orders.orderLength > 24) {
+        return dispatch({
+          type: GET_ALL_ORDERS,
+          payload: { orders, priority },
+        });
+      } else {
+        return dispatch({
+          type: GET_ALL_ORDERS_STOP,
+          payload: { orders, priority },
+        });
+      }
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });
     }
@@ -134,6 +143,7 @@ export const searchOrders = (term) => {
         `${uri}/order/all?pagination=10&page=1&search=${term}`
       );
       const orders = await response.data;
+      console.log(orders);
 
       return dispatch({ type: GET_SEARCH_ORDERS, payload: orders });
     } catch (err) {

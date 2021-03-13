@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Dropdown from "react-dropdown";
-import { useDispatch } from "react-redux";
-import * as OrderActions from "../../store/actions/OrdersActions";
 import { useHistory } from "react-router-dom";
 import Switch from "react-switch";
-// import { useSelector } from "react-redux";
 
 const transferDept = [
   { value: "Assembly", label: "Assembly" },
@@ -17,7 +14,7 @@ const transferDept = [
   { value: "Purchasing", label: "Purchasing" },
 ];
 
-const OrderList = ({ order }) => {
+const OrderList = ({ order, handlePriority, handleDeptTransfer }) => {
   const history = useHistory();
   const {
     _id,
@@ -34,15 +31,16 @@ const OrderList = ({ order }) => {
   const [currPriority, setPriority] = useState(() =>
     priority === "high" ? true : false
   );
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const setCurrDept = (newDept) => {
-    dispatch(OrderActions.transferDept(newDept, currentDept, _id));
+    handleDeptTransfer(newDept, currentDept, _id, sku);
+    // dispatch(OrderActions.transferDept(newDept, currentDept, _id));
   };
 
   const setPrior = () => {
     setPriority(!currPriority);
-    dispatch(OrderActions.setOrderPriority(!currPriority, _id));
+    handlePriority(currPriority, _id, sku);
   };
 
   return (

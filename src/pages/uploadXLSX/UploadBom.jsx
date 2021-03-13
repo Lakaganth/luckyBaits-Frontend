@@ -82,9 +82,9 @@ const UploadBom = () => {
         </UploadButton>
       )}
       {mappedData.length > 0 && (
-        <TableSection>
-          <table className="table container">
-            <thead>
+        <TableSection className="table-responsive">
+          <table className="table container table-striped">
+            <thead className="thead-dark">
               <tr>
                 <th scope="col">SKU</th>
                 <th scope="col">Sku Component</th>

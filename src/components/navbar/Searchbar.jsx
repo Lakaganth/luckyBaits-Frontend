@@ -9,15 +9,16 @@ const Searchbar = () => {
   const [search, setSearch] = useState("");
   // const searchRedux = useSelector((state) => state.orders.search);
   const dispatch = useDispatch();
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (search.length > 0) {
-      await dispatch(OrderActions.setSearch(search));
-      await fetchSearchResults();
+      dispatch(OrderActions.setSearch(search));
+      fetchSearchResults();
     }
   };
 
   const fetchSearchResults = () => {
+    dispatch(OrderActions.clearOrders());
     dispatch(OrderActions.searchOrders(search));
     setSearch("");
   };
@@ -31,11 +32,7 @@ const Searchbar = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
       <button>
-        {search.length > 0 ? (
-          <img src={CloseIcon} alt="Close icon" />
-        ) : (
-          <img src={SearchIcon} alt="Search icon" />
-        )}
+        <img src={SearchIcon} alt="Search icon" />
       </button>
     </Container>
   );

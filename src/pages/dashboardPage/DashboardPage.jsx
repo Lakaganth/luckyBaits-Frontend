@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
 import OrderList from "../../components/dashboard/OrderList";
 import Navbar from "../../components/navbar/Navbar";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import PriorityButtons from "../../components/dashboard/PriorityButtons";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -38,10 +40,10 @@ const DashboardPage = () => {
   const highPriority = useSelector((state) => state.orders.highPriorityOrder);
   const lowPriority = useSelector((state) => state.orders.lowPriorityOrder);
   const totalOrders = useSelector((state) => state.orders.totalOrder);
-  const orderLength = useSelector((state) => state.orders.orderLength);
-  const [hasMore, setHasMore] = useState(true);
+  const hasMore = useSelector((state) => state.orders.hasMore);
+  // const [hasMore, setHasMore] = useState(true);
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
   const [loading, setLoading] = useState(false);
   // const [pagination, setPagination] = useState(10);
   const [page, setPage] = useState(1);
@@ -59,53 +61,59 @@ const DashboardPage = () => {
     const getAllOrders = async () => {
       setLoading(true);
       dispatch(OrderActions.getAllOrders(25, 1, priority, department));
-
       setLoading(false);
     };
     getAllOrders();
-  }, [page, dispatch, department, priority]);
+  }, [page, dispatch, department, priority, searchOrders]);
 
-  console.log(orderLength);
   const updatePage = (e) => {
-    // setPage((prev) => prev + 1);
-    if (orderLength && orderLength >= 24) {
-      setHasMore(true);
-      return setPage((prev) => prev + 1);
-    } else {
-      setHasMore(false);
-      setPage(1);
-    }
+    setPage(() => page + 1);
   };
 
   const displayHighPriority = async () => {
     setPriority(true);
     setPage(1);
     dispatch(OrderActions.clearOrders());
-    await dispatch(OrderActions.getAllOrders(25, page, true, department));
+    toast.info("Displaying High Priority orders");
+    // await dispatch(OrderActions.getAllOrders(25, page, true, department));
   };
 
   const displayLowPriority = async () => {
     setPriority(false);
     setPage(1);
     dispatch(OrderActions.clearOrders());
-    await dispatch(OrderActions.getAllOrders(25, page, false, department));
+    toast.info("Displaying Low Priority orders");
+    // await dispatch(OrderActions.getAllOrders(25, page, false, department));
   };
 
-  const onOrderSelect = async (order) => {
-    await dispatch(OrderActions.setCurrentOrder(order));
-    history.push({
-      pathname: `/orders/${order._id}`,
-    });
-  };
+  // const onOrderSelect = async (order) => {
+  //   await dispatch(OrderActions.setCurrentOrder(order));
+  //   history.push({
+  //     pathname: `/orders/${order._id}`,
+  //   });
+  // };
 
   const clearSearch = () => {
     dispatch(OrderActions.clearSearchOrders());
   };
 
-  console.log(totalOrders);
+  const handlePriority = (prior, _id, sku) => {
+    // dispatch(OrderActions.clearOrders());
+    dispatch(OrderActions.setOrderPriority(!prior, _id));
+    toast(`Order SKU: ${sku} set to ${!prior ? "High" : "Low"}`);
+  };
+
+  const handleDeptTransfer = (dept, curDept, _id, sku) => {
+    // dispatch(OrderActions.clearOrders());
+    dispatch(OrderActions.transferDept(dept, currentDept, _id));
+    toast(`Order SKU: ${sku} transfered from ${curDept} to ${dept} `);
+  };
+
+  console.log(searchOrders);
 
   return (
     <Container>
+      <ToastContainer autoClose={3000} />
       <Navbar />
       <h3>Dashboard</h3>
       <PaginationSection>
@@ -134,15 +142,20 @@ const DashboardPage = () => {
           </div>
           {searchOrders.length > 0 &&
             searchOrders.map((order, index) => (
-              <button key={order._id} onClick={() => onOrderSelect(order)}>
-                <OrderList key={order._id} order={order} />
-              </button>
+              // <button key={order._id} onClick={() => onOrderSelect(order)}>
+              <OrderList
+                key={order._id}
+                order={order}
+                handlePriority={handlePriority}
+                handleDeptTransfer={handleDeptTransfer}
+              />
+              // </button>
             ))}
         </RecentWorkOrder>
       ) : (
         <InfiniteScroll
           dataLength={ordersRedux.length}
-          next={() => updatePage()}
+          next={updatePage}
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
         >
@@ -155,7 +168,12 @@ const DashboardPage = () => {
             <Header priority={priority} />
             {ordersRedux.length > 0 &&
               ordersRedux.map((order, index) => (
-                <OrderList key={index} order={order} />
+                <OrderList
+                  key={index}
+                  order={order}
+                  handlePriority={handlePriority}
+                  handleDeptTransfer={handleDeptTransfer}
+                />
               ))}
           </RecentWorkOrder>
         </InfiniteScroll>
@@ -169,7 +187,6 @@ const Header = ({ priority }) => {
   return (
     <Color priority={priority}>
       <p>Priority</p>
-
       <p>SKU</p>
       <p>Description</p>
       <p>2 Weeks</p>
@@ -184,6 +201,7 @@ const Header = ({ priority }) => {
 
 const Container = styled.div`
   width: 100vw;
+  min-height: 100vh;
   background-color: #e4eaf5;
   button {
     background-color: transparent;
@@ -222,7 +240,8 @@ const Color = styled.div`
 const RecentWorkOrder = styled.div`
   width: 90vw;
   background-color: #e4eaf5;
-  margin: 5vh auto;
+  margin: 5vh auto 0 auto;
+  padding-bottom: 2vh;
   .priority-title {
     font-family: Roboto;
     font-style: normal;

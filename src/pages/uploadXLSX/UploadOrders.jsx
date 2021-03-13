@@ -81,9 +81,9 @@ const UploadOrders = () => {
         </UploadButton>
       )}
       {mappedData.length > 0 && (
-        <TableSection>
-          <table className="table container">
-            <thead>
+        <TableSection className="table-responsive">
+          <table className="table container table-striped ">
+            <thead className="thead-dark">
               <tr>
                 <th scope="col">SKU</th>
                 <th scope="col">Description</th>
@@ -95,9 +95,9 @@ const UploadOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {mappedData.map((d) => (
-                <tr key={d.SKU}>
-                  <th key={d.SKU}>{d.SKU}</th>
+              {mappedData.map((d, index) => (
+                <tr key={index}>
+                  <th>{d.SKU}</th>
                   <td>{d.Description}</td>
                   <td>{d.Weeks2}</td>
                   <td>{d.Weeks4}</td>

@@ -1,17 +1,36 @@
 import React from "react";
 import styled from "styled-components";
+import { HorizontalBar } from "react-chartjs-2";
 import HighPriority from "../../assets/highpriority.png";
 import LowPriority from "../../assets/lowpriority.png";
 
+const data = {
+  labels: ["High", "Low"],
+  datasets: [
+    {
+      // label: "My First dataset",
+      backgroundColor: "rgba(255,99,132,0.2)",
+      borderColor: "rgba(255,99,132,1)",
+      borderWidth: 1,
+      hoverBackgroundColor: "rgba(255,99,132,0.4)",
+      hoverBorderColor: "rgba(255,99,132,1)",
+      data: [65, 60],
+    },
+  ],
+};
+
 const PriorityButtons = ({ displayHigh, displayLow, high, low, total }) => {
-  console.log(total);
   return (
     <Container>
       <DataContainer>
         <div className="title">
           <p className="total">Total work order</p>
+
           <p className="total-number">{total}</p>
         </div>
+        {/* <div>
+          <HorizontalBar data={data} />
+        </div> */}
       </DataContainer>
       <div className="priority-buttons">
         <button onClick={displayHigh}>
@@ -61,9 +80,15 @@ const DataContainer = styled.div`
   border-radius: 21px;
   position: relative;
   font-family: Roboto Medium;
+  display: flex;
+  flex-direction: column;
   .title {
-    height: 40%;
+    height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(
       180deg,
       #4f56e1 0%,
@@ -72,32 +97,34 @@ const DataContainer = styled.div`
     );
     /* background-image: url("../../assets/semicircles.png"); */
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 21px 21px 0px 0px;
+    border-radius: 21px 21px 21px 21px;
     position: absolute;
     top: 0;
     left: 0;
     p {
       font-style: normal;
       font-weight: 500;
-      font-size: 20px;
+      font-size: 3rem;
       line-height: 15px;
       color: #fff;
-      margin: 5vh 0 0 5vw;
+
+      margin: 1.1em 0;
+      /* text-align: center; */
     }
     .total-number {
-      font-size: 55px;
+      font-size: 6rem;
     }
   }
 `;
 
 const ButtonContainer = styled.div`
-  width: 28vw;
-  height: 20vh;
+  /* width: 28vw; */
+  min-height: 15vh;
   background: #f3f3f3;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
-  margin: 2vh 0;
-  padding: 1vh 2vw;
+  margin: 2em 0;
+  padding: 1em 2em;
   display: flex;
   flex-direction: row;
   justify-content: space-even;
