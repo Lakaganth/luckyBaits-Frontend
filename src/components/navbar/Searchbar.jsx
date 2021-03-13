@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import SearchIcon from "../../assets/search_icon.png";
-import CloseIcon from "../../assets/close.png";
+// import CloseIcon from "../../assets/close.png";
 import { useDispatch } from "react-redux";
 import * as OrderActions from "../../store/actions/OrdersActions";
 

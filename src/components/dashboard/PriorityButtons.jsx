@@ -1,23 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import { HorizontalBar } from "react-chartjs-2";
+// import { HorizontalBar } from "react-chartjs-2";
 import HighPriority from "../../assets/highpriority.png";
 import LowPriority from "../../assets/lowpriority.png";
 
-const data = {
-  labels: ["High", "Low"],
-  datasets: [
-    {
-      // label: "My First dataset",
-      backgroundColor: "rgba(255,99,132,0.2)",
-      borderColor: "rgba(255,99,132,1)",
-      borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
-      data: [65, 60],
-    },
-  ],
-};
+// const data = {
+//   labels: ["High", "Low"],
+//   datasets: [
+//     {
+//       // label: "My First dataset",
+//       backgroundColor: "rgba(255,99,132,0.2)",
+//       borderColor: "rgba(255,99,132,1)",
+//       borderWidth: 1,
+//       hoverBackgroundColor: "rgba(255,99,132,0.4)",
+//       hoverBorderColor: "rgba(255,99,132,1)",
+//       data: [65, 60],
+//     },
+//   ],
+// };
 
 const PriorityButtons = ({ displayHigh, displayLow, high, low, total }) => {
   return (
