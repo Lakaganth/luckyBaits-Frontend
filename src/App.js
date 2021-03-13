@@ -13,6 +13,8 @@ const App = () => {
   const location = useLocation();
 
   // const authRedux = useSelector((state) => state.auth);
+  // // const [token, setToken] = useState(localStorage.token);
+  // console.log(authRedux);
 
   return (
     <div className="App">
@@ -20,11 +22,16 @@ const App = () => {
         <Route
           exact
           path="/"
+          // component={DashboardPage}
           render={() =>
             localStorage.token !== "" ? <DashboardPage /> : <LoginPage />
           }
         />
 
+        <Route
+          path="/login"
+          render={() => localStorage.token === "" && <LoginPage />}
+        />
         <Route path="/orders/:id" component={OrderDetailPage} />
         <Route path="/bom/:sku" component={SkuDetailPAge} />
         <Route path="/upload" component={UploadOrders} />

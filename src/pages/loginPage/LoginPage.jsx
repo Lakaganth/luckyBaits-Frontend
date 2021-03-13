@@ -3,18 +3,19 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import * as AuthActions from "../../store/actions/AuthActions";
 import { Container } from "../styles/globalStyles";
+import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
   const authRedux = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const handleSubmit = () => {
     dispatch(AuthActions.signinUser(name, password));
     if (authRedux.token != null) {
-      console.log(authRedux.token);
+      history.push("/");
     }
   };
   return (

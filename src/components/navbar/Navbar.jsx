@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as AuthActions from "../../store/actions/AuthActions";
 import DefaultAvatar from "../../assets/svg/avatar_default.svg";
 import Searchbar from "./Searchbar";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { useSpring, animated, useTransition } from "react-spring";
 
 const Navbar = () => {
@@ -12,6 +12,7 @@ const Navbar = () => {
   const { name } = authRedux.user;
   const [isNavOpen, setNavOpen] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const menuAnimation1 = useSpring({
     transform: isNavOpen
@@ -33,6 +34,7 @@ const Navbar = () => {
     await localStorage.setItem("token", "");
     dispatch(AuthActions.sigoutUser());
     setNavOpen(false);
+    history.push("/login");
   };
 
   return (
