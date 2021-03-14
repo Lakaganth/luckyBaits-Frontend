@@ -128,7 +128,6 @@ export const filterByDept = (pagination = 25, page, priority, filter) => {
 export const clearOrders = () => {
   return async (dispatch) => {
     try {
-      console.log("Clearing orders");
       return dispatch({ type: CLEAR_ORDERS });
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });
@@ -143,8 +142,6 @@ export const searchOrders = (term) => {
         `${uri}/order/all?pagination=10&page=1&search=${term}`
       );
       const orders = await response.data;
-      console.log(orders);
-
       return dispatch({ type: GET_SEARCH_ORDERS, payload: orders });
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });
@@ -202,7 +199,7 @@ export const transferDept = (newCurrDept, prevDept, orderId) => {
           availDept: prevDept,
         },
       };
-      // console.log(transObj);
+      console.log(transObj);
 
       const response = await Axios.patch(
         `${uri}/order/transfer/${orderId}`,
@@ -210,6 +207,8 @@ export const transferDept = (newCurrDept, prevDept, orderId) => {
       );
 
       const order = await response.data;
+
+      console.log(order);
       return dispatch({ type: TRANSFER_DEPT, payload: order });
     } catch (err) {
       return dispatch({ type: ERROR, payload: err });

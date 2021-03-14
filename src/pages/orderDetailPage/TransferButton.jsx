@@ -21,6 +21,8 @@ const TransferButton = ({ currentDept, orderId, order }) => {
   const [viewHistory, setViewHistory] = useState(false);
   const dispatch = useDispatch();
 
+  console.log(currDept);
+  console.log(currentDept);
   const handleTransfer = () => {
     if (change && currDept !== currentDept) {
       dispatch(OrderActions.transferDept(currDept, currentDept, orderId));
@@ -43,7 +45,6 @@ const TransferButton = ({ currentDept, orderId, order }) => {
             defaultValue={currDept}
             onChange={(v) => {
               setChange(true);
-
               setCurrDept(v.value);
             }}
             options={transferDept}

@@ -60,7 +60,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const getAllOrders = async () => {
       setLoading(true);
-      dispatch(OrderActions.getAllOrders(25, 1, priority, department));
+      dispatch(OrderActions.getAllOrders(25, page, priority, department));
       setLoading(false);
     };
     getAllOrders();
@@ -71,9 +71,9 @@ const DashboardPage = () => {
   };
 
   const displayHighPriority = async () => {
+    dispatch(OrderActions.clearOrders());
     setPriority(true);
     setPage(1);
-    dispatch(OrderActions.clearOrders());
     toast.info("Displaying High Priority orders");
     // await dispatch(OrderActions.getAllOrders(25, page, true, department));
   };
@@ -105,11 +105,10 @@ const DashboardPage = () => {
 
   const handleDeptTransfer = (dept, curDept, _id, sku) => {
     // dispatch(OrderActions.clearOrders());
-    dispatch(OrderActions.transferDept(dept, currentDept, _id));
+    console.log(currentDept);
+    dispatch(OrderActions.transferDept(dept, curDept, _id));
     toast(`Order SKU: ${sku} transfered from ${curDept} to ${dept} `);
   };
-
-  console.log(searchOrders);
 
   return (
     <Container>
