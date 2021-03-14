@@ -34,7 +34,7 @@ const Navbar = () => {
     await localStorage.setItem("token", "");
     dispatch(AuthActions.sigoutUser());
     setNavOpen(false);
-    history.push("/login");
+    history.push("/");
   };
 
   return (

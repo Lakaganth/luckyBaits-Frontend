@@ -14,7 +14,7 @@ const LoginPage = () => {
 
   const handleSubmit = () => {
     dispatch(AuthActions.signinUser(name, password));
-    if (authRedux.token != null) {
+    if (localStorage.token != null) {
       history.push("/");
     }
   };
@@ -40,7 +40,9 @@ const LoginPage = () => {
             onChange={(password) => setPassword(password.target.value)}
           />
         </InputGroup>
-        <button onClick={handleSubmit}>Login</button>
+        <button onClick={handleSubmit}>
+          {authRedux.token == null ? "Enter App" : "Login"}
+        </button>
       </Contents>
     </Container>
   );
