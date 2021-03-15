@@ -21,7 +21,7 @@ const LoginPage = () => {
   return (
     <Container>
       <Contents>
-        <h3>Lucky Strike Baits</h3>
+        <h3>Lucky Strike Bait Works</h3>
         <InputGroup>
           <p>Name</p>
           <input
@@ -33,7 +33,7 @@ const LoginPage = () => {
           />
           <p>Password</p>
           <input
-            type="text"
+            type="password"
             name="password"
             value={password}
             placeholder="Enter Password"
